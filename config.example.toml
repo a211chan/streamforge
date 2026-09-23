@@ -1,0 +1,35 @@
+# StreamForge 設定ファイル
+# このファイルを config.toml にコピーして使う（config.toml はコミットしない）
+
+[server]
+host = "127.0.0.1"   # 外部に晒さない。リモートからは Tailscale 経由で到達する
+port = 8080
+
+[ffmpeg]
+# PATH 上の ffmpeg を使う場合は "ffmpeg" のまま。
+# WHIP 対応ビルドなどに差し替えるときはここを絶対パスにする（第2段階）
+path = "ffmpeg"
+
+[paths]
+# 実データの置き場所。~ は展開される
+data_dir = "~/StreamForge"      # SQLite DB を置く
+media_dir = "~/StreamForge/media"  # ループ再生用の動画ファイル置き場
+log_dir = "~/StreamForge/logs"
+
+[job]
+default_duration_sec = 7200   # 既定のタイムアウト（2時間）。0 で無期限
+log_tail_bytes = 5242880      # 1ジョブあたり保持する生ログの上限（5MB）
+
+[overlay]
+# オーバーレイに使うフォント。空ならリポジトリ同梱 → OS標準 の順に自動で探す
+font_path = ""
+# 時刻同期の確認先。壁時計モードで焼いた時刻の信頼性を測るために使う
+ntp_server = "time.apple.com"
+
+[snapshot]
+# セルフプレビュー：送出中の絵を、送出側の画面で確認する。
+# エンコードの直前（オーバーレイを焼いた後）のフレームを毎秒1枚だけJPEGにする。
+# 実測の追加コストは全体の 2% 程度で、帯域は 90kbps ほど。
+enabled = true
+width = 480    # 480px で焼き込んだ時計も設定行も読める
+fps = 1.0      # 毎秒の枚数。上げるほど帯域を送出と奪い合う

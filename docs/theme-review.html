@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StreamForge 配色レビュー</title><style>
+:root{--pg:#fbfbfa;--sf:#fff;--ink:#17181a;--ink2:#3a3d40;--mut:#76797d;--ln:#dedfe1;--lns:#b4b7ba;--fill:#eeefef}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--pg:#131416;--sf:#1a1c1e;--ink:#edeeef;--ink2:#c6c8ca;--mut:#8e9195;--ln:#2e3134;--lns:#4c5053;--fill:#26292b}}
+:root[data-theme=dark]{--pg:#131416;--sf:#1a1c1e;--ink:#edeeef;--ink2:#c6c8ca;--mut:#8e9195;--ln:#2e3134;--lns:#4c5053;--fill:#26292b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif}
+.page{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:40px 80px}
+h1{font-size:30px;margin:0 0 8px;letter-spacing:-.01em}
+.sub{margin:0;color:var(--ink2);max-width:62ch}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0}
+.tag{font:11px/1.6 ui-monospace,Menlo,monospace;border:1px solid var(--lns);color:var(--mut);padding:2px 8px;border-radius:2px}
+.tag.pass{background:var(--ink);color:var(--pg);border-color:var(--ink)}
+h2{font-size:22px;margin:44px 0 4px;padding-top:20px;border-top:2px solid var(--ink)}
+h3{font-size:14px;margin:26px 0 8px;font-family:ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:500}
+p{margin:0 0 12px}.cap{font-size:12.5px;color:var(--mut)}
+.badge{font:12px/1.5 ui-monospace,Menlo,monospace;padding:2px 9px;border-radius:2px;border:1px solid var(--lns);color:var(--mut)}
+.badge.pass{border-color:var(--ink);color:var(--ink);font-weight:600}
+.badge.fail{border-width:2px;border-style:double;border-color:var(--ink);color:var(--ink);font-weight:600}
+.scene-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.mock{padding:18px;border:1px dashed var(--lns);margin:8px 0 6px}
+.mock-card{padding:16px;max-width:520px}
+.mock-h{font-size:15px;font-weight:600;margin-bottom:10px}
+.mock-in{padding:9px 11px;font-size:12px;margin-bottom:12px;overflow:hidden;white-space:nowrap}
+.mock-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.mock-btn{padding:6px 12px;font-size:12px;font-weight:600}
+.mock-p{font-size:13px;margin:0 0 4px}
+.mock-focus{display:inline-block;padding:1px 6px;margin-left:8px;font-size:13px}
+.mock-rule{margin:12px 0}
+.mock-charts{display:flex;gap:6px}
+.mock-charts span{width:44px;height:14px;display:block}
+.tw{overflow-x:auto;border:1px solid var(--ln);margin-bottom:8px}
+table{border-collapse:collapse;width:100%;background:var(--sf);font-size:13px;min-width:460px}
+th,td{text-align:left;padding:7px 11px;border-bottom:1px solid var(--ln);vertical-align:top}
+thead th{font:11px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);background:var(--fill);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.ok td:last-child{color:var(--mut)}
+tr.ng{background:repeating-linear-gradient(-45deg,transparent 0 6px,var(--fill) 6px 12px)}
+tr.ng td:last-child{font-weight:700;text-decoration:underline double}
+.sw{display:inline-block;width:15px;height:15px;border:1px solid var(--lns);vertical-align:-3px;margin-right:7px}
+code{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--ink2);word-break:break-all}
+.bands{display:grid;gap:7px;margin:10px 0}
+.band{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.band-l{font:11px/1.5 ui-monospace,Menlo,monospace;color:var(--mut);width:36px;flex:0 0 36px}
+.band-c{display:flex;gap:5px}
+.band-c span{width:56px;height:20px;display:block;border:1px solid var(--lns)}
+.band-n{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--mut)}
+.band-n.ng{color:var(--ink);font-weight:700;text-decoration:underline double}
+.band-n small{opacity:.75}
+table.grid{min-width:0;width:auto}
+table.grid td,table.grid th{text-align:center;padding:5px 12px;font-size:12px}
+table.grid td.self{color:var(--mut)}
+table.grid td.ng{font-weight:700;text-decoration:underline double}
+table.grid td.info{color:var(--mut);font-style:italic}
+.band-n.info{color:var(--mut);font-style:italic}
+tr.info td{color:var(--mut);font-style:italic}
+.mg{color:var(--mut)}
+.mg small{opacity:.8}
+.mg.tight{color:var(--ink);font-weight:600;border-bottom:1px dotted var(--ink)}
+.todo{border-left:5px double var(--lns);padding:10px 14px;background:var(--sf);font-size:13px;color:var(--ink2)}
+footer{margin-top:56px;border-top:1px solid var(--ln);padding-top:14px;font-size:12px;color:var(--mut)}
+</style></head><body>
+<div class="page">
+<h1>StreamForge 配色レビュー</h1>
+<p class="sub">画面の配色・書体・形状は <code>app/static/theme.css</code> の
+セマンティックトークンだけで決まります。この資料はそのファイルから自動生成したもので、
+載っている値は生成時点の中身そのものです。</p>
+<div class="meta"><span class="tag pass">合格 5</span><span class="tag">theme.css</span><span class="tag">sha256 f2f7cecd2f2b8a60</span><span class="tag">git 8b9ef31</span><span class="tag">2026-09-21 11:56</span></div>
+
+<h2>レビュー済み版からの変更</h2>
+<p class="cap">基準＝レビュー済み版 2026-09-21 09:20（sha256 <code>f2f7cecd2f2b8a60</code>）　→　今回 2026-09-21 11:56（sha256 <code>f2f7cecd2f2b8a60</code>）</p><p>レビュー済み版から変わっていません。</p>
+
+<h2>見かた</h2>
+<p>シーンごとに、<b>画面見本 → 系列色 → コントラスト → トークン</b> の順に並べています。
+基準を割った行には斜線の地と二重下線が付きます（色だけに頼らないため）。</p>
+<div class="tw"><table><thead><tr><th>項目</th><th>下限</th><th>理由</th></tr></thead><tbody>
+<tr><td>本文と背景</td><td class="num">4.5:1</td><td>WCAG 2.1 AA の通常サイズ本文</td></tr>
+<tr><td>大きい文字・UI部品・境界・系列色</td><td class="num">3.0:1</td><td>同 AA の非テキスト要素</td></tr>
+<tr><td>系列色どうしの隔たり</td><td class="num">ΔE76 25</td>
+<td>コントラスト比では「別の色に見えるか」は分からない。青と紫は比が同じでもP型では潰れる</td></tr>
+<tr><td>系列色の白黒での明度差</td><td class="num">ΔL* 8</td>
+<td>白黒印刷では色相が落ちる。ΔE が足りていても明度が並べば同じ線になる</td></tr>
+<tr><td>系列色どうしの隔たり（typewriter のみ）</td><td class="num">判定対象外</td>
+<td>彩度を持たない設計では色相成分がほぼゼロになり、ΔE が ΔL* と一致するため。
+識別は ΔL* 10 と線種の併用で担保する</td></tr>
+<tr><td>系列色の白黒での明度差（typewriter のみ）</td><td class="num">ΔL* 10</td>
+<td>色相での分離を諦めるぶん、明度差を厚くして白黒での識別を主役にする。
+このシーンで<b>唯一の、色による担保</b></td></tr>
+</tbody></table></div>
+
+<h3>系列の識別を色だけに頼らない要件</h3>
+<div class="tw"><table><thead><tr><th>シーン</th><th>併用する手がかり</th><th>理由</th></tr></thead><tbody>
+<tr><td>typewriter</td><td><b>線種の併用を必須</b>（下表のとおり固定）</td>
+<td>原稿用紙とタイプライターは一色のインクで書き分けるメディアなので、
+これは埋め合わせではなく世界観そのもの。
+色を外しても5本が読み分けられる状態を保つ</td></tr>
+<tr><td>その他4シーン</td><td>任意（色で ΔE 25 を満たしている）</td>
+<td>色覚シミュレーション下でも分離できているため、線種は表現の自由</td></tr>
+</tbody></table></div>
+
+<h3>typewriter の線種の割り当て（固定）</h3>
+<p>要件として書くだけでは実装時に落ちるので、系列ごとの線種をここで固定します。
+<code>app/static/style.css</code> の <code>.series-1</code>〜<code>.series-5</code> が
+この表と一対一で対応します（実装済み。<code>--series-color</code> /
+<code>--series-dash</code> / <code>--series-border-style</code> /
+<code>--series-marker</code> の4つを持ちます）。片方だけ変えないでください。</p>
+<div class="tw"><table><thead><tr><th>系列</th><th>色</th><th>線種</th>
+<th><code>stroke-dasharray</code> / <code>border-style</code></th><th>マーカー</th></tr></thead><tbody>
+<tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#292222"></span><code>#292222</code></td>
+<td>実線</td><td class="num"><code>none</code> / <code>solid</code></td><td>●（丸・塗り）</td></tr>
+<tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#3d3838"></span><code>#3d3838</code></td>
+<td>破線</td><td class="num"><code>6 4</code> / <code>dashed</code></td><td>■（四角・塗り）</td></tr>
+<tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#5c4d46"></span><code>#5c4d46</code></td>
+<td>点線</td><td class="num"><code>1 3</code> / <code>dotted</code></td><td>▲（三角・塗り）</td></tr>
+<tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#7a6458"></span><code>#7a6458</code></td>
+<td>一点鎖線</td><td class="num"><code>10 3 1 3</code> / <code>dashed</code></td><td>◇（菱形・抜き）</td></tr>
+<tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#8f8061"></span><code>#8f8061</code></td>
+<td>二点鎖線</td><td class="num"><code>10 3 1 3 1 3</code> / <code>dashed</code></td><td>○（丸・抜き）</td></tr>
+</tbody></table></div>
+<p class="cap">HTML/CSS の <code>border-style</code> には一点鎖線・二点鎖線がないため、
+罫線として描く場合は <code>repeating-linear-gradient</code> か SVG の
+<code>stroke-dasharray</code> を使います。マーカーは凡例と折れ線の頂点の両方に付けます。
+線種だけでは細線が潰れる環境があるので、マーカーは省略しません。</p>
+
+<h3>下限を変えた記録</h3>
+<p>シーンを足すたびに「通らないから下げる」が横行しないための台帳です。
+下げた場合は、色以外の手がかりをあわせて要件にします。</p>
+<div class="tw"><table><thead><tr><th>#</th><th>日付</th><th>シーン</th><th>項目</th>
+<th>変更</th><th>理由</th><th>埋め合わせ</th></tr></thead><tbody>
+<tr><td class="num">1</td><td>2026-09-21</td><td>typewriter</td><td>系列色の ΔE76</td>
+<td class="num">25 → 判定対象外</td>
+<td>彩度 40% 以下・赤インクと無彩色のみという世界観では、二色覚下で色相による分離ができない。
+総当たりで測った到達可能な上限は <b>minΔE 9.97</b>（ΔL* 10 以上・対比 3:1 以上のもとで）。
+効いているのは彩度ではなく<b>使える色相の方向数</b>で、色相を自由にすれば彩度 40% のままでも
+ΔE 33.7 まで伸びる。
+さらに、この配色では色相成分がほぼゼロなので ΔE76 の定義から ΔE ≒ |ΔL*| となり、
+ΔL* 10 を課した時点で ΔE の下限は自動的に満たされる（実測 通常 10.09 / P型 9.97 / D型 10.23）。
+発火しない下限を置いて「合格」と出すと合格印の意味が薄まるため、下げずに判定から外した</td>
+<td>ΔL* の下限を 10 に引き上げ（下記2件目）＋線種の併用を必須化</td></tr>
+<tr><td class="num">2</td><td>2026-09-21</td><td>typewriter</td><td>系列色の白黒での明度差 ΔL*</td>
+<td class="num">8 → 10（引き上げ）</td>
+<td>色相での分離を諦めるぶん、明度差が識別の主役になるため厚くする。
+<b>この値は typewriter で唯一の、色による担保</b>。
+実測 10.01 に対し、この条件での上限は 10.5（生成りの紙に対比 3:1 を保つと
+L* は 14〜56 の 42 しか使えず、それを4つの間隔に割った値）。
+<b>ほぼ限界であり、系列を1本でも増やすと満たせなくなる</b>（6本なら間隔は 8.4 まで縮む）</td>
+<td>—（厳しくした側）</td></tr>
+</tbody></table></div>
+
+<h3>typewriter の系列色について（制約の内訳）</h3>
+<p>このシーンだけ ΔE を判定から外しています。総当たりで測った結果は次のとおりです。</p>
+<div class="tw"><table><thead><tr><th>条件</th><th>到達できる minΔE</th><th>備考</th></tr></thead><tbody>
+<tr><td>赤インクと無彩色のみ・彩度≤40%・ΔL*≥10</td><td class="num">9.97</td>
+<td>現状。ΔL* も対比も同時に上限に張り付いている</td></tr>
+<tr><td>色相の制限なし・彩度≤40%・ΔL* の制約なし</td><td class="num">33.73</td>
+<td>彩度 40% という数字自体は効いていない。効いているのは色相の方向数</td></tr>
+<tr><td>色相の制限なし・彩度≤85%・ΔL* の制約なし</td><td class="num">45.03</td>
+<td>参考。ここまでやると他シーンと見分けがつかなくなる</td></tr>
+</tbody></table></div>
+<p>効いている制約は2つです。<b>①使える色相が赤〜セピアの一方向しかないこと</b>
+（二色覚下ではこの範囲がさらに縮む）。
+<b>②生成りの紙に対比 3:1 を保つと L* が 14〜56 の 42 しか使えず、
+4つの間隔に割ると ΔL* は 10.5 が上限になること</b>。
+色相を捨てた配色では ΔE ≒ |ΔL*| になるので、ΔE を下限として置いても
+ΔL* の下限に吸収されて発火しません。だから下げるのではなく判定から外しました。</p>
+<p class="cap">色覚シミュレーションは Viénot, Brettel &amp; Mollon (1999) の二色覚モデル
+（線形sRGBに行列を直接かける正典の係数）。この実装は毎回自己診断を通しています。見るのは4点 —ゴールデン値（#ff0000→P型 #5e4c00 ／ D型 #939500、#00ff00→#f2f700 ／ #dbd900、#0000ff と #808080 は不変）との一致、変換後の R と G が全色一致していないこと、青チャンネルが動かないこと、無彩色が色づかないこと。ゴールデン値を見ているので、P型とD型の行列を取り違えた実装もここで落ちます。
+<code>--text-disabled</code> は「操作できない」ことを示す色なので下限の対象外です。</p>
+
+
+<h2>light</h2>
+<div class="scene-head"><span class="badge pass">合格</span>
+  <span class="cap">極性 light ／ 自前のトークン 33個</span></div>
+
+<h3>画面見本（実際の値で描画）</h3>
+
+<div class="mock" style="background:#f7f8f9;color:#1d2126;
+     font-family:-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif;border-color:#767e87">
+  <div class="mock-card" style="background:#ffffff;border:1px solid #767e87;
+       border-radius:6px;box-shadow:0 1px 2px color-mix(in srgb, #101620 10%, transparent)">
+    <div class="mock-h" style="font-family:-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif">送出先</div>
+    <div class="mock-in" style="background:#ffffff;border:1px solid #767e87;
+         border-radius:6px;color:#5b636d;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace">
+      rtmp://ingest.example.com/live/■■■■
+    </div>
+    <div class="mock-row">
+      <span class="mock-btn" style="background:#2563c9;color:#ffffff;
+            border-radius:6px">送出開始</span>
+      <span class="mock-btn" style="background:#8a5a00;color:#ffffff;
+            border-radius:6px">警告1件あり</span>
+      <span class="mock-btn" style="background:#c02630;color:#ffffff;
+            border-radius:6px">停止</span>
+      <span class="mock-btn" style="background:#157a3a;color:#ffffff;
+            border-radius:6px">running</span>
+    </div>
+    <div class="mock-p" style="color:#1d2126">本文。送出中の絵を毎秒1枚だけ取りに行きます。</div>
+    <div class="mock-p" style="color:#5b636d">補助文字。受信側の絵ではありません。</div>
+    <div class="mock-p" style="color:#a2a9b1">操作できない状態の文字。</div>
+    <div class="mock-p"><span style="background:#cfe0fa;color:#16233a">選択したところ</span>
+      <span class="mock-focus" style="outline:2px solid #1a53b0;border-radius:6px;
+            color:#1d2126">フォーカス</span></div>
+    <div class="mock-rule" style="border-top:1px solid #dfe3e8"></div>
+    <div class="mock-charts"><span style="background:#10634d"></span><span style="background:#9c5c17"></span><span style="background:#1c8bb0"></span><span style="background:#64179c"></span><span style="background:#560e59"></span></div>
+  </div>
+</div>
+<p class="cap">この資料の地色ではなく、シーンの <code>--bg</code> 上に描いています。</p>
+<h3>系列色と色覚シミュレーション</h3>
+<div class="bands"><div class="band"><span class="band-l">通常</span><div class="band-c"><span style="background:#10634d"></span><span style="background:#9c5c17"></span><span style="background:#1c8bb0"></span><span style="background:#64179c"></span><span style="background:#560e59"></span></div><span class="band-n ok">最小ΔE 33.0<small>（chart-4×chart-5）</small></span></div><div class="band"><span class="band-l">P型</span><div class="band-c"><span style="background:#5e604d"></span><span style="background:#666217"></span><span style="background:#8486b0"></span><span style="background:#29239c"></span><span style="background:#201b59"></span></div><span class="band-n ok">最小ΔE 30.1<small>（chart-1×chart-2）</small></span></div><div class="band"><span class="band-l">D型</span><div class="band-c"><span style="background:#55544d"></span><span style="background:#737417"></span><span style="background:#7777b0"></span><span style="background:#3b3c9c"></span><span style="background:#313159"></span></div><span class="band-n ok">最小ΔE 30.6<small>（chart-3×chart-5）</small></span></div><div class="band"><span class="band-l">白黒</span><div class="band-c"><span style="background:#575757"></span><span style="background:#6b6b6b"></span><span style="background:#818181"></span><span style="background:#444444"></span><span style="background:#313131"></span></div><span class="band-n ok">最小ΔL* 8.3<small>（chart-1×chart-2・下限 8）</small></span></div></div><p class="cap">白黒は色相が落ちて明度だけが残る状態。ΔL* は CIE Lab の明度差で、これが小さいと紙の上では同じ線になる。下の表は全ペアのΔE76（通常・P型・D型のうち最小値）、下限 25。</p><table class="grid"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>1</th><td class="self">—</td><td class="ok num">30</td><td class="ok num">39</td><td class="ok num">65</td><td class="ok num">34</td></tr><tr><th>2</th><td class="ok num">30</td><td class="self">—</td><td class="ok num">67</td><td class="ok num">109</td><td class="ok num">79</td></tr><tr><th>3</th><td class="ok num">39</td><td class="ok num">67</td><td class="self">—</td><td class="ok num">35</td><td class="ok num">31</td></tr><tr><th>4</th><td class="ok num">65</td><td class="ok num">109</td><td class="ok num">35</td><td class="self">—</td><td class="ok num">33</td></tr><tr><th>5</th><td class="ok num">34</td><td class="ok num">79</td><td class="ok num">31</td><td class="ok num">33</td><td class="self">—</td></tr></table>
+<h3>コントラスト</h3>
+<div class="tw"><table><thead><tr><th>組み合わせ</th><th>実測</th><th>下限</th><th>余裕</th>
+<th>判定</th></tr></thead><tbody><tr class="ok"><td>本文 / ページ地</td><td class="num">15.22:1</td><td class="num">4.5</td><td class="num"><span class="mg">+10.72<small>（3.38倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / カード</td><td class="num">16.18:1</td><td class="num">4.5</td><td class="num"><span class="mg">+11.68<small>（3.60倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / 沈めた面</td><td class="num">16.18:1</td><td class="num">4.5</td><td class="num"><span class="mg">+11.68<small>（3.60倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / ページ地</td><td class="num">5.72:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.22<small>（1.27倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / カード</td><td class="num">6.09:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.59<small>（1.35倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / 沈めた面</td><td class="num">6.09:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.59<small>（1.35倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / ページ地</td><td class="num">3.87:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.87<small>（1.29倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / カード</td><td class="num">4.11:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.11<small>（1.37倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント / カード</td><td class="num">5.67:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.67<small>（1.89倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>正常 / カード</td><td class="num">5.42:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.42<small>（1.81倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>注意 / カード</td><td class="num">5.93:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.93<small>（1.98倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>失敗 / カード</td><td class="num">5.90:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.90<small>（1.97倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / ページ地</td><td class="num">6.79:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.79<small>（2.26倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / 沈めた面</td><td class="num">7.22:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.22<small>（2.41倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>選択文字 / 選択地</td><td class="num">11.75:1</td><td class="num">4.5</td><td class="num"><span class="mg">+7.25<small>（2.61倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント</td><td class="num">5.67:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.17<small>（1.26倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント（ホバー）</td><td class="num">7.86:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.36<small>（1.75倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント（ホバー） / カード</td><td class="num">7.86:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.86<small>（2.62倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 正常</td><td class="num">5.42:1</td><td class="num">4.5</td><td class="num"><span class="mg">+0.92<small>（1.20倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 注意</td><td class="num">5.93:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.43<small>（1.32倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 失敗</td><td class="num">5.90:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.40<small>（1.31倍）</small></span></td><td>合格</td></tr><tr class="info"><td>フォーカス / アクセント（塗りに接した場合）</td><td class="num">1.27:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="info"><td>フォーカス / アクセント・ホバー（同上）</td><td class="num">1.09:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="ok"><td>chart-1 / bg</td><td class="num">6.78:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.78<small>（2.26倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / bg</td><td class="num">4.99:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.99<small>（1.66倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / bg</td><td class="num">3.68:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.68<small>（1.23倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / bg</td><td class="num">9.21:1</td><td class="num">3.0</td><td class="num"><span class="mg">+6.21<small>（3.07倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / bg</td><td class="num">12.32:1</td><td class="num">3.0</td><td class="num"><span class="mg">+9.32<small>（4.11倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-1 / surface-well</td><td class="num">7.21:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.21<small>（2.40倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / surface-well</td><td class="num">5.31:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.31<small>（1.77倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / surface-well</td><td class="num">3.91:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.91<small>（1.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / surface-well</td><td class="num">9.79:1</td><td class="num">3.0</td><td class="num"><span class="mg">+6.79<small>（3.26倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / surface-well</td><td class="num">13.10:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.10<small>（4.37倍）</small></span></td><td>合格</td></tr></tbody></table></div>
+<p class="cap">「参考」の2行は判定しません。<code>--focus-ring</code> は地とアクセントに挟まれ、
+両方から 3:1 離れる色がどのシーンにも存在しないためです。
+<code>outline-offset</code> を正の値にしてリングを地の上に浮かせる運用が前提で、
+その前提が崩れたときに効いてくる数字として出しています。<br>
+「余裕」は下限との差と、下限の何倍か。1.20倍を下回るものに印を付けています
+（下限すれすれの項目を見つけるため。印が付いていても不合格ではありません）。</p>
+<h3>トークン</h3>
+<div class="tw"><table><thead><tr><th>トークン</th><th>値</th><th>用途</th></tr></thead>
+<tbody><tr><td><code>--bg</code></td><td><span class="sw" style="background:#f7f8f9"></span><code>#f7f8f9</code></td><td></td></tr><tr><td><code>--surface</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--surface-well</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--text</code></td><td><span class="sw" style="background:#1d2126"></span><code>#1d2126</code></td><td></td></tr><tr><td><code>--text-muted</code></td><td><span class="sw" style="background:#5b636d"></span><code>#5b636d</code></td><td></td></tr><tr><td><code>--text-disabled</code></td><td><span class="sw" style="background:#a2a9b1"></span><code>#a2a9b1</code></td><td></td></tr><tr><td><code>--selection-bg</code></td><td><span class="sw" style="background:#cfe0fa"></span><code>#cfe0fa</code></td><td></td></tr><tr><td><code>--selection-text</code></td><td><span class="sw" style="background:#16233a"></span><code>#16233a</code></td><td></td></tr><tr><td><code>--border</code></td><td><span class="sw" style="background:#dfe3e8"></span><code>#dfe3e8</code></td><td></td></tr><tr><td><code>--border-strong</code></td><td><span class="sw" style="background:#767e87"></span><code>#767e87</code></td><td></td></tr><tr><td><code>--accent</code></td><td><span class="sw" style="background:#2563c9"></span><code>#2563c9</code></td><td></td></tr><tr><td><code>--accent-hover</code></td><td><span class="sw" style="background:#1b4fa0"></span><code>#1b4fa0</code></td><td></td></tr><tr><td><code>--on-accent</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--success</code></td><td><span class="sw" style="background:#157a3a"></span><code>#157a3a</code></td><td></td></tr><tr><td><code>--on-success</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--warning</code></td><td><span class="sw" style="background:#8a5a00"></span><code>#8a5a00</code></td><td></td></tr><tr><td><code>--on-warning</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--danger</code></td><td><span class="sw" style="background:#c02630"></span><code>#c02630</code></td><td></td></tr><tr><td><code>--on-danger</code></td><td><span class="sw" style="background:#ffffff"></span><code>#ffffff</code></td><td></td></tr><tr><td><code>--focus-ring</code></td><td><span class="sw" style="background:#1a53b0"></span><code>#1a53b0</code></td><td></td></tr><tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#10634d"></span><code>#10634d</code></td><td></td></tr><tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#9c5c17"></span><code>#9c5c17</code></td><td></td></tr><tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#1c8bb0"></span><code>#1c8bb0</code></td><td></td></tr><tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#64179c"></span><code>#64179c</code></td><td></td></tr><tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#560e59"></span><code>#560e59</code></td><td></td></tr><tr><td><code>--font-ui</code></td><td><code>-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--font-mono</code></td><td><code>ui-monospace, SFMono-Regular, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-display</code></td><td><code>-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--radius</code></td><td><code>6px</code></td><td></td></tr><tr><td><code>--border-width</code></td><td><code>1px</code></td><td></td></tr><tr><td><code>--glow-color</code></td><td><span class="sw" style="background:#101620"></span><code>#101620</code></td><td></td></tr><tr><td><code>--shadow</code></td><td><code>0 1px 2px color-mix(in srgb, var(--glow-color) 10%, transparent)</code></td><td></td></tr><tr><td><code>--shadow-inset</code></td><td><code>inset 0 0 0 0 transparent</code></td><td></td></tr></tbody></table></div>
+<h2>dark</h2>
+<div class="scene-head"><span class="badge pass">合格</span>
+  <span class="cap">極性 dark ／ 自前のトークン 33個</span></div>
+
+<h3>画面見本（実際の値で描画）</h3>
+
+<div class="mock" style="background:#17191c;color:#e8eaec;
+     font-family:-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif;border-color:#767c84">
+  <div class="mock-card" style="background:#1e2124;border:1px solid #767c84;
+       border-radius:6px;box-shadow:0 1px 2px color-mix(in srgb, #000000 45%, transparent)">
+    <div class="mock-h" style="font-family:-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif">送出先</div>
+    <div class="mock-in" style="background:#121417;border:1px solid #767c84;
+         border-radius:6px;color:#a0a5ab;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace">
+      rtmp://ingest.example.com/live/■■■■
+    </div>
+    <div class="mock-row">
+      <span class="mock-btn" style="background:#5b9bf2;color:#08111f;
+            border-radius:6px">送出開始</span>
+      <span class="mock-btn" style="background:#d8a441;color:#181206;
+            border-radius:6px">警告1件あり</span>
+      <span class="mock-btn" style="background:#ef6f6c;color:#1c0806;
+            border-radius:6px">停止</span>
+      <span class="mock-btn" style="background:#4fbe72;color:#07160c;
+            border-radius:6px">running</span>
+    </div>
+    <div class="mock-p" style="color:#e8eaec">本文。送出中の絵を毎秒1枚だけ取りに行きます。</div>
+    <div class="mock-p" style="color:#a0a5ab">補助文字。受信側の絵ではありません。</div>
+    <div class="mock-p" style="color:#61666c">操作できない状態の文字。</div>
+    <div class="mock-p"><span style="background:#2f4e7a;color:#eef3fb">選択したところ</span>
+      <span class="mock-focus" style="outline:2px solid #f5f7fa;border-radius:6px;
+            color:#e8eaec">フォーカス</span></div>
+    <div class="mock-rule" style="border-top:1px solid #2b2e33"></div>
+    <div class="mock-charts"><span style="background:#a4d8fc"></span><span style="background:#22c99d"></span><span style="background:#fff382"></span><span style="background:#cf66ff"></span><span style="background:#db4125"></span></div>
+  </div>
+</div>
+<p class="cap">この資料の地色ではなく、シーンの <code>--bg</code> 上に描いています。</p>
+<h3>系列色と色覚シミュレーション</h3>
+<div class="bands"><div class="band"><span class="band-l">通常</span><div class="band-c"><span style="background:#a4d8fc"></span><span style="background:#22c99d"></span><span style="background:#fff382"></span><span style="background:#cf66ff"></span><span style="background:#db4125"></span></div><span class="band-n ok">最小ΔE 55.3<small>（chart-1×chart-2）</small></span></div><div class="band"><span class="band-l">P型</span><div class="band-c"><span style="background:#d3d5fc"></span><span style="background:#bfc39d"></span><span style="background:#f4f482"></span><span style="background:#7872ff"></span><span style="background:#645925"></span></div><span class="band-n ok">最小ΔE 40.2<small>（chart-2×chart-3）</small></span></div><div class="band"><span class="band-l">D型</span><div class="band-c"><span style="background:#cbcafc"></span><span style="background:#adac9d"></span><span style="background:#f7f782"></span><span style="background:#8f91ff"></span><span style="background:#888925"></span></div><span class="band-n ok">最小ΔE 36.9<small>（chart-1×chart-2）</small></span></div><div class="band"><span class="band-l">白黒</span><div class="band-c"><span style="background:#d1d1d1"></span><span style="background:#b2b2b2"></span><span style="background:#f0f0f0"></span><span style="background:#959595"></span><span style="background:#797979"></span></div><span class="band-n ok">最小ΔL* 10.7<small>（chart-1×chart-3・下限 8）</small></span></div></div><p class="cap">白黒は色相が落ちて明度だけが残る状態。ΔL* は CIE Lab の明度差で、これが小さいと紙の上では同じ線になる。下の表は全ペアのΔE76（通常・P型・D型のうち最小値）、下限 25。</p><table class="grid"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>1</th><td class="self">—</td><td class="ok num">37</td><td class="ok num">77</td><td class="ok num">39</td><td class="ok num">71</td></tr><tr><th>2</th><td class="ok num">37</td><td class="self">—</td><td class="ok num">40</td><td class="ok num">69</td><td class="ok num">42</td></tr><tr><th>3</th><td class="ok num">77</td><td class="ok num">40</td><td class="self">—</td><td class="ok num">123</td><td class="ok num">40</td></tr><tr><th>4</th><td class="ok num">39</td><td class="ok num">69</td><td class="ok num">123</td><td class="self">—</td><td class="ok num">110</td></tr><tr><th>5</th><td class="ok num">71</td><td class="ok num">42</td><td class="ok num">40</td><td class="ok num">110</td><td class="self">—</td></tr></table>
+<h3>コントラスト</h3>
+<div class="tw"><table><thead><tr><th>組み合わせ</th><th>実測</th><th>下限</th><th>余裕</th>
+<th>判定</th></tr></thead><tbody><tr class="ok"><td>本文 / ページ地</td><td class="num">14.60:1</td><td class="num">4.5</td><td class="num"><span class="mg">+10.10<small>（3.25倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / カード</td><td class="num">13.41:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.91<small>（2.98倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / 沈めた面</td><td class="num">15.30:1</td><td class="num">4.5</td><td class="num"><span class="mg">+10.80<small>（3.40倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / ページ地</td><td class="num">7.10:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.60<small>（1.58倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / カード</td><td class="num">6.52:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.02<small>（1.45倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / 沈めた面</td><td class="num">7.44:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.94<small>（1.65倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / ページ地</td><td class="num">4.18:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.18<small>（1.39倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / カード</td><td class="num">3.84:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.84<small>（1.28倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント / カード</td><td class="num">5.71:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.71<small>（1.90倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>正常 / カード</td><td class="num">6.89:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.89<small>（2.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>注意 / カード</td><td class="num">7.17:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.17<small>（2.39倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>失敗 / カード</td><td class="num">5.52:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.52<small>（1.84倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / ページ地</td><td class="num">16.41:1</td><td class="num">3.0</td><td class="num"><span class="mg">+13.41<small>（5.47倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / 沈めた面</td><td class="num">17.19:1</td><td class="num">3.0</td><td class="num"><span class="mg">+14.19<small>（5.73倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>選択文字 / 選択地</td><td class="num">7.56:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.06<small>（1.68倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント</td><td class="num">6.68:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.18<small>（1.48倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント（ホバー）</td><td class="num">9.73:1</td><td class="num">4.5</td><td class="num"><span class="mg">+5.23<small>（2.16倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント（ホバー） / カード</td><td class="num">8.32:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.32<small>（2.77倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 正常</td><td class="num">7.92:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.42<small>（1.76倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 注意</td><td class="num">8.25:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.75<small>（1.83倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 失敗</td><td class="num">6.59:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.09<small>（1.46倍）</small></span></td><td>合格</td></tr><tr class="info"><td>フォーカス / アクセント（塗りに接した場合）</td><td class="num">2.64:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="info"><td>フォーカス / アクセント・ホバー（同上）</td><td class="num">1.81:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="ok"><td>chart-1 / bg</td><td class="num">11.58:1</td><td class="num">3.0</td><td class="num"><span class="mg">+8.58<small>（3.86倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / bg</td><td class="num">8.31:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.31<small>（2.77倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / bg</td><td class="num">15.43:1</td><td class="num">3.0</td><td class="num"><span class="mg">+12.43<small>（5.14倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / bg</td><td class="num">5.87:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.87<small>（1.96倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / bg</td><td class="num">4.02:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.02<small>（1.34倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-1 / surface-well</td><td class="num">12.13:1</td><td class="num">3.0</td><td class="num"><span class="mg">+9.13<small>（4.04倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / surface-well</td><td class="num">8.71:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.71<small>（2.90倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / surface-well</td><td class="num">16.16:1</td><td class="num">3.0</td><td class="num"><span class="mg">+13.16<small>（5.39倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / surface-well</td><td class="num">6.15:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.15<small>（2.05倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / surface-well</td><td class="num">4.21:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.21<small>（1.40倍）</small></span></td><td>合格</td></tr></tbody></table></div>
+<p class="cap">「参考」の2行は判定しません。<code>--focus-ring</code> は地とアクセントに挟まれ、
+両方から 3:1 離れる色がどのシーンにも存在しないためです。
+<code>outline-offset</code> を正の値にしてリングを地の上に浮かせる運用が前提で、
+その前提が崩れたときに効いてくる数字として出しています。<br>
+「余裕」は下限との差と、下限の何倍か。1.20倍を下回るものに印を付けています
+（下限すれすれの項目を見つけるため。印が付いていても不合格ではありません）。</p>
+<h3>トークン</h3>
+<div class="tw"><table><thead><tr><th>トークン</th><th>値</th><th>用途</th></tr></thead>
+<tbody><tr><td><code>--bg</code></td><td><span class="sw" style="background:#17191c"></span><code>#17191c</code></td><td></td></tr><tr><td><code>--surface</code></td><td><span class="sw" style="background:#1e2124"></span><code>#1e2124</code></td><td></td></tr><tr><td><code>--surface-well</code></td><td><span class="sw" style="background:#121417"></span><code>#121417</code></td><td></td></tr><tr><td><code>--text</code></td><td><span class="sw" style="background:#e8eaec"></span><code>#e8eaec</code></td><td></td></tr><tr><td><code>--text-muted</code></td><td><span class="sw" style="background:#a0a5ab"></span><code>#a0a5ab</code></td><td></td></tr><tr><td><code>--text-disabled</code></td><td><span class="sw" style="background:#61666c"></span><code>#61666c</code></td><td></td></tr><tr><td><code>--selection-bg</code></td><td><span class="sw" style="background:#2f4e7a"></span><code>#2f4e7a</code></td><td></td></tr><tr><td><code>--selection-text</code></td><td><span class="sw" style="background:#eef3fb"></span><code>#eef3fb</code></td><td></td></tr><tr><td><code>--border</code></td><td><span class="sw" style="background:#2b2e33"></span><code>#2b2e33</code></td><td></td></tr><tr><td><code>--border-strong</code></td><td><span class="sw" style="background:#767c84"></span><code>#767c84</code></td><td></td></tr><tr><td><code>--accent</code></td><td><span class="sw" style="background:#5b9bf2"></span><code>#5b9bf2</code></td><td></td></tr><tr><td><code>--accent-hover</code></td><td><span class="sw" style="background:#8fbcff"></span><code>#8fbcff</code></td><td></td></tr><tr><td><code>--on-accent</code></td><td><span class="sw" style="background:#08111f"></span><code>#08111f</code></td><td></td></tr><tr><td><code>--success</code></td><td><span class="sw" style="background:#4fbe72"></span><code>#4fbe72</code></td><td></td></tr><tr><td><code>--on-success</code></td><td><span class="sw" style="background:#07160c"></span><code>#07160c</code></td><td></td></tr><tr><td><code>--warning</code></td><td><span class="sw" style="background:#d8a441"></span><code>#d8a441</code></td><td></td></tr><tr><td><code>--on-warning</code></td><td><span class="sw" style="background:#181206"></span><code>#181206</code></td><td></td></tr><tr><td><code>--danger</code></td><td><span class="sw" style="background:#ef6f6c"></span><code>#ef6f6c</code></td><td></td></tr><tr><td><code>--on-danger</code></td><td><span class="sw" style="background:#1c0806"></span><code>#1c0806</code></td><td></td></tr><tr><td><code>--focus-ring</code></td><td><span class="sw" style="background:#f5f7fa"></span><code>#f5f7fa</code></td><td></td></tr><tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#a4d8fc"></span><code>#a4d8fc</code></td><td></td></tr><tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#22c99d"></span><code>#22c99d</code></td><td></td></tr><tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#fff382"></span><code>#fff382</code></td><td></td></tr><tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#cf66ff"></span><code>#cf66ff</code></td><td></td></tr><tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#db4125"></span><code>#db4125</code></td><td></td></tr><tr><td><code>--font-ui</code></td><td><code>-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--font-mono</code></td><td><code>ui-monospace, SFMono-Regular, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-display</code></td><td><code>-apple-system, BlinkMacSystemFont, &quot;Hiragino Sans&quot;,
+                  &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--radius</code></td><td><code>6px</code></td><td></td></tr><tr><td><code>--border-width</code></td><td><code>1px</code></td><td></td></tr><tr><td><code>--glow-color</code></td><td><span class="sw" style="background:#000000"></span><code>#000000</code></td><td></td></tr><tr><td><code>--shadow</code></td><td><code>0 1px 2px color-mix(in srgb, var(--glow-color) 45%, transparent)</code></td><td></td></tr><tr><td><code>--shadow-inset</code></td><td><code>inset 0 0 0 0 transparent</code></td><td></td></tr></tbody></table></div>
+<h2>terminal</h2>
+<div class="scene-head"><span class="badge pass">合格</span>
+  <span class="cap">極性 dark ／ 自前のトークン 33個</span></div>
+
+<h3>画面見本（実際の値で描画）</h3>
+
+<div class="mock" style="background:#060c0a;color:#aed8c0;
+     font-family:ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace;border-color:#3e7c6a">
+  <div class="mock-card" style="background:#0a1311;border:1px solid #3e7c6a;
+       border-radius:0;box-shadow:0 0 6px color-mix(in srgb, #3bf58a 22%, transparent)">
+    <div class="mock-h" style="font-family:ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace">送出先</div>
+    <div class="mock-in" style="background:#0f1a17;border:1px solid #3e7c6a;
+         border-radius:0;color:#7fae94;font-family:ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace">
+      rtmp://ingest.example.com/live/■■■■
+    </div>
+    <div class="mock-row">
+      <span class="mock-btn" style="background:#3bf58a;color:#04120b;
+            border-radius:0">送出開始</span>
+      <span class="mock-btn" style="background:#ffb648;color:#17120a;
+            border-radius:0">警告1件あり</span>
+      <span class="mock-btn" style="background:#ff5f56;color:#1a0705;
+            border-radius:0">停止</span>
+      <span class="mock-btn" style="background:#3bf58a;color:#04120b;
+            border-radius:0">running</span>
+    </div>
+    <div class="mock-p" style="color:#aed8c0">本文。送出中の絵を毎秒1枚だけ取りに行きます。</div>
+    <div class="mock-p" style="color:#7fae94">補助文字。受信側の絵ではありません。</div>
+    <div class="mock-p" style="color:#4d6b5c">操作できない状態の文字。</div>
+    <div class="mock-p"><span style="background:#34d97b;color:#04120b">選択したところ</span>
+      <span class="mock-focus" style="outline:2px solid #55e8ff;border-radius:0;
+            color:#aed8c0">フォーカス</span></div>
+    <div class="mock-rule" style="border-top:1px solid #1d3a30"></div>
+    <div class="mock-charts"><span style="background:#3bf58a"></span><span style="background:#20d4b6"></span><span style="background:#f08629"></span><span style="background:#ca54e8"></span><span style="background:#836596"></span></div>
+  </div>
+</div>
+<p class="cap">この資料の地色ではなく、シーンの <code>--bg</code> 上に描いています。</p>
+<h3>系列色と色覚シミュレーション</h3>
+<div class="bands"><div class="band"><span class="band-l">通常</span><div class="band-c"><span style="background:#3bf58a"></span><span style="background:#20d4b6"></span><span style="background:#f08629"></span><span style="background:#ca54e8"></span><span style="background:#836596"></span></div><span class="band-n ok">最小ΔE 41.8<small>（chart-1×chart-2）</small></span></div><div class="band"><span class="band-l">P型</span><div class="band-c"><span style="background:#e9ed8a"></span><span style="background:#c9cdb6"></span><span style="background:#979129"></span><span style="background:#6a63e8"></span><span style="background:#696896"></span></div><span class="band-n ok">最小ΔE 33.4<small>（chart-1×chart-3）</small></span></div><div class="band"><span class="band-l">D型</span><div class="band-c"><span style="background:#d4d38a"></span><span style="background:#b6b5b6"></span><span style="background:#aeaf29"></span><span style="background:#8587e8"></span><span style="background:#6f6f96"></span></div><span class="band-n ok">最小ΔE 30.7<small>（chart-1×chart-3）</small></span></div><div class="band"><span class="band-l">白黒</span><div class="band-c"><span style="background:#d7d7d7"></span><span style="background:#bdbdbd"></span><span style="background:#a1a1a1"></span><span style="background:#888888"></span><span style="background:#707070"></span></div><span class="band-n ok">最小ΔL* 9.4<small>（chart-4×chart-5・下限 8）</small></span></div></div><p class="cap">白黒は色相が落ちて明度だけが残る状態。ΔL* は CIE Lab の明度差で、これが小さいと紙の上では同じ線になる。下の表は全ペアのΔE76（通常・P型・D型のうち最小値）、下限 25。</p><table class="grid"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>1</th><td class="self">—</td><td class="ok num">39</td><td class="ok num">31</td><td class="ok num">95</td><td class="ok num">70</td></tr><tr><th>2</th><td class="ok num">39</td><td class="self">—</td><td class="ok num">48</td><td class="ok num">56</td><td class="ok num">34</td></tr><tr><th>3</th><td class="ok num">31</td><td class="ok num">48</td><td class="self">—</td><td class="ok num">120</td><td class="ok num">82</td></tr><tr><th>4</th><td class="ok num">95</td><td class="ok num">56</td><td class="ok num">120</td><td class="self">—</td><td class="ok num">34</td></tr><tr><th>5</th><td class="ok num">70</td><td class="ok num">34</td><td class="ok num">82</td><td class="ok num">34</td><td class="self">—</td></tr></table>
+<h3>コントラスト</h3>
+<div class="tw"><table><thead><tr><th>組み合わせ</th><th>実測</th><th>下限</th><th>余裕</th>
+<th>判定</th></tr></thead><tbody><tr class="ok"><td>本文 / ページ地</td><td class="num">12.57:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.07<small>（2.79倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / カード</td><td class="num">12.01:1</td><td class="num">4.5</td><td class="num"><span class="mg">+7.51<small>（2.67倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / 沈めた面</td><td class="num">11.34:1</td><td class="num">4.5</td><td class="num"><span class="mg">+6.84<small>（2.52倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / ページ地</td><td class="num">7.87:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.37<small>（1.75倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / カード</td><td class="num">7.53:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.03<small>（1.67倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / 沈めた面</td><td class="num">7.10:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.60<small>（1.58倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / ページ地</td><td class="num">4.03:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.03<small>（1.34倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / カード</td><td class="num">3.86:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.86<small>（1.29倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント / カード</td><td class="num">13.12:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.12<small>（4.37倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>正常 / カード</td><td class="num">13.12:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.12<small>（4.37倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>注意 / カード</td><td class="num">10.80:1</td><td class="num">3.0</td><td class="num"><span class="mg">+7.80<small>（3.60倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>失敗 / カード</td><td class="num">6.30:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.30<small>（2.10倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / ページ地</td><td class="num">13.50:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.50<small>（4.50倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / 沈めた面</td><td class="num">12.18:1</td><td class="num">3.0</td><td class="num"><span class="mg">+9.18<small>（4.06倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>選択文字 / 選択地</td><td class="num">10.36:1</td><td class="num">4.5</td><td class="num"><span class="mg">+5.86<small>（2.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント</td><td class="num">13.33:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.83<small>（2.96倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント（ホバー）</td><td class="num">15.41:1</td><td class="num">4.5</td><td class="num"><span class="mg">+10.91<small>（3.42倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント（ホバー） / カード</td><td class="num">15.16:1</td><td class="num">3.0</td><td class="num"><span class="mg">+12.16<small>（5.05倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 正常</td><td class="num">13.33:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.83<small>（2.96倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 注意</td><td class="num">10.68:1</td><td class="num">4.5</td><td class="num"><span class="mg">+6.18<small>（2.37倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 失敗</td><td class="num">6.52:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.02<small>（1.45倍）</small></span></td><td>合格</td></tr><tr class="info"><td>フォーカス / アクセント（塗りに接した場合）</td><td class="num">1.02:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="info"><td>フォーカス / アクセント・ホバー（同上）</td><td class="num">1.18:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="ok"><td>chart-1 / bg</td><td class="num">13.73:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.73<small>（4.58倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / bg</td><td class="num">10.48:1</td><td class="num">3.0</td><td class="num"><span class="mg">+7.48<small>（3.49倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / bg</td><td class="num">7.65:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.65<small>（2.55倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / bg</td><td class="num">5.58:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.58<small>（1.86倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / bg</td><td class="num">4.01:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.01<small>（1.34倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-1 / surface-well</td><td class="num">12.38:1</td><td class="num">3.0</td><td class="num"><span class="mg">+9.38<small>（4.13倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / surface-well</td><td class="num">9.45:1</td><td class="num">3.0</td><td class="num"><span class="mg">+6.45<small>（3.15倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / surface-well</td><td class="num">6.90:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.90<small>（2.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / surface-well</td><td class="num">5.04:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.04<small>（1.68倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / surface-well</td><td class="num">3.61:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.61<small>（1.20倍）</small></span></td><td>合格</td></tr></tbody></table></div>
+<p class="cap">「参考」の2行は判定しません。<code>--focus-ring</code> は地とアクセントに挟まれ、
+両方から 3:1 離れる色がどのシーンにも存在しないためです。
+<code>outline-offset</code> を正の値にしてリングを地の上に浮かせる運用が前提で、
+その前提が崩れたときに効いてくる数字として出しています。<br>
+「余裕」は下限との差と、下限の何倍か。1.20倍を下回るものに印を付けています
+（下限すれすれの項目を見つけるため。印が付いていても不合格ではありません）。</p>
+<h3>トークン</h3>
+<div class="tw"><table><thead><tr><th>トークン</th><th>値</th><th>用途</th></tr></thead>
+<tbody><tr><td><code>--bg</code></td><td><span class="sw" style="background:#060c0a"></span><code>#060c0a</code></td><td></td></tr><tr><td><code>--surface</code></td><td><span class="sw" style="background:#0a1311"></span><code>#0a1311</code></td><td></td></tr><tr><td><code>--surface-well</code></td><td><span class="sw" style="background:#0f1a17"></span><code>#0f1a17</code></td><td></td></tr><tr><td><code>--text</code></td><td><span class="sw" style="background:#aed8c0"></span><code>#aed8c0</code></td><td></td></tr><tr><td><code>--text-muted</code></td><td><span class="sw" style="background:#7fae94"></span><code>#7fae94</code></td><td></td></tr><tr><td><code>--text-disabled</code></td><td><span class="sw" style="background:#4d6b5c"></span><code>#4d6b5c</code></td><td></td></tr><tr><td><code>--selection-bg</code></td><td><span class="sw" style="background:#34d97b"></span><code>#34d97b</code></td><td></td></tr><tr><td><code>--selection-text</code></td><td><span class="sw" style="background:#04120b"></span><code>#04120b</code></td><td></td></tr><tr><td><code>--border</code></td><td><span class="sw" style="background:#1d3a30"></span><code>#1d3a30</code></td><td></td></tr><tr><td><code>--border-strong</code></td><td><span class="sw" style="background:#3e7c6a"></span><code>#3e7c6a</code></td><td></td></tr><tr><td><code>--accent</code></td><td><span class="sw" style="background:#3bf58a"></span><code>#3bf58a</code></td><td></td></tr><tr><td><code>--accent-hover</code></td><td><span class="sw" style="background:#7dffbb"></span><code>#7dffbb</code></td><td></td></tr><tr><td><code>--on-accent</code></td><td><span class="sw" style="background:#04120b"></span><code>#04120b</code></td><td></td></tr><tr><td><code>--success</code></td><td><span class="sw" style="background:#3bf58a"></span><code>#3bf58a</code></td><td></td></tr><tr><td><code>--on-success</code></td><td><span class="sw" style="background:#04120b"></span><code>#04120b</code></td><td></td></tr><tr><td><code>--warning</code></td><td><span class="sw" style="background:#ffb648"></span><code>#ffb648</code></td><td></td></tr><tr><td><code>--on-warning</code></td><td><span class="sw" style="background:#17120a"></span><code>#17120a</code></td><td></td></tr><tr><td><code>--danger</code></td><td><span class="sw" style="background:#ff5f56"></span><code>#ff5f56</code></td><td></td></tr><tr><td><code>--on-danger</code></td><td><span class="sw" style="background:#1a0705"></span><code>#1a0705</code></td><td></td></tr><tr><td><code>--focus-ring</code></td><td><span class="sw" style="background:#55e8ff"></span><code>#55e8ff</code></td><td></td></tr><tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#3bf58a"></span><code>#3bf58a</code></td><td></td></tr><tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#20d4b6"></span><code>#20d4b6</code></td><td></td></tr><tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#f08629"></span><code>#f08629</code></td><td></td></tr><tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#ca54e8"></span><code>#ca54e8</code></td><td></td></tr><tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#836596"></span><code>#836596</code></td><td></td></tr><tr><td><code>--font-ui</code></td><td><code>ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-mono</code></td><td><code>ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-display</code></td><td><code>ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--radius</code></td><td><code>0</code></td><td></td></tr><tr><td><code>--border-width</code></td><td><code>1px</code></td><td></td></tr><tr><td><code>--glow-color</code></td><td><span class="sw" style="background:#3bf58a"></span><code>#3bf58a</code></td><td></td></tr><tr><td><code>--shadow</code></td><td><code>0 0 6px color-mix(in srgb, var(--glow-color) 22%, transparent)</code></td><td></td></tr><tr><td><code>--shadow-inset</code></td><td><code>inset 0 0 12px color-mix(in srgb, var(--glow-color) 6%, transparent)</code></td><td></td></tr></tbody></table></div>
+<h2>tactical</h2>
+<div class="scene-head"><span class="badge pass">合格</span>
+  <span class="cap">極性 dark ／ 自前のトークン 33個</span></div>
+
+<h3>画面見本（実際の値で描画）</h3>
+
+<div class="mock" style="background:#0c0c0b;color:#e2dac5;
+     font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial,
+                  &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif;border-color:#7d8468">
+  <div class="mock-card" style="background:#23271b;border:2px solid #7d8468;
+       border-radius:2px;box-shadow:3px 3px 0 #000000">
+    <div class="mock-h" style="font-family:&quot;Stencil Std&quot;, &quot;Oswald&quot;, &quot;Helvetica Neue Condensed Bold&quot;,
+                  &quot;Arial Narrow&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif">送出先</div>
+    <div class="mock-in" style="background:#191712;border:2px solid #7d8468;
+         border-radius:2px;color:#a89e85;font-family:ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace">
+      rtmp://ingest.example.com/live/■■■■
+    </div>
+    <div class="mock-row">
+      <span class="mock-btn" style="background:#7e9a5a;color:#0d1207;
+            border-radius:2px">送出開始</span>
+      <span class="mock-btn" style="background:#e0a52e;color:#1a1203;
+            border-radius:2px">警告1件あり</span>
+      <span class="mock-btn" style="background:#d4604c;color:#140402;
+            border-radius:2px">停止</span>
+      <span class="mock-btn" style="background:#7e9a5a;color:#0d1207;
+            border-radius:2px">running</span>
+    </div>
+    <div class="mock-p" style="color:#e2dac5">本文。送出中の絵を毎秒1枚だけ取りに行きます。</div>
+    <div class="mock-p" style="color:#a89e85">補助文字。受信側の絵ではありません。</div>
+    <div class="mock-p" style="color:#6a6454">操作できない状態の文字。</div>
+    <div class="mock-p"><span style="background:#4a5437;color:#f2ece0">選択したところ</span>
+      <span class="mock-focus" style="outline:2px solid #f2ece0;border-radius:2px;
+            color:#e2dac5">フォーカス</span></div>
+    <div class="mock-rule" style="border-top:1px solid #333828"></div>
+    <div class="mock-charts"><span style="background:#9dff7d"></span><span style="background:#a8872c"></span><span style="background:#44b1e3"></span><span style="background:#f0c0ae"></span><span style="background:#7d705c"></span></div>
+  </div>
+</div>
+<p class="cap">この資料の地色ではなく、シーンの <code>--bg</code> 上に描いています。</p>
+<h3>系列色と色覚シミュレーション</h3>
+<div class="bands"><div class="band"><span class="band-l">通常</span><div class="band-c"><span style="background:#9dff7d"></span><span style="background:#a8872c"></span><span style="background:#44b1e3"></span><span style="background:#f0c0ae"></span><span style="background:#7d705c"></span></div><span class="band-n ok">最小ΔE 36.0<small>（chart-4×chart-5）</small></span></div><div class="band"><span class="band-l">P型</span><div class="band-c"><span style="background:#f6fa7d"></span><span style="background:#8b8a2c"></span><span style="background:#a9ace3"></span><span style="background:#c6c4ae"></span><span style="background:#72715c"></span></div><span class="band-n ok">最小ΔE 31.6<small>（chart-4×chart-5）</small></span></div><div class="band"><span class="band-l">D型</span><div class="band-c"><span style="background:#e8e77d"></span><span style="background:#92922c"></span><span style="background:#9b9ae3"></span><span style="background:#d0d0ae"></span><span style="background:#74745c"></span></div><span class="band-n ok">最小ΔE 30.9<small>（chart-1×chart-2）</small></span></div><div class="band"><span class="band-l">白黒</span><div class="band-c"><span style="background:#e7e7e7"></span><span style="background:#8b8b8b"></span><span style="background:#a6a6a6"></span><span style="background:#cacaca"></span><span style="background:#727272"></span></div><span class="band-n ok">最小ΔL* 10.0<small>（chart-2×chart-5・下限 8）</small></span></div></div><p class="cap">白黒は色相が落ちて明度だけが残る状態。ΔL* は CIE Lab の明度差で、これが小さいと紙の上では同じ線になる。下の表は全ペアのΔE76（通常・P型・D型のうち最小値）、下限 25。</p><table class="grid"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>1</th><td class="self">—</td><td class="ok num">31</td><td class="ok num">94</td><td class="ok num">36</td><td class="ok num">57</td></tr><tr><th>2</th><td class="ok num">31</td><td class="self">—</td><td class="ok num">81</td><td class="ok num">42</td><td class="ok num">38</td></tr><tr><th>3</th><td class="ok num">94</td><td class="ok num">81</td><td class="self">—</td><td class="ok num">42</td><td class="ok num">49</td></tr><tr><th>4</th><td class="ok num">36</td><td class="ok num">42</td><td class="ok num">42</td><td class="self">—</td><td class="ok num">32</td></tr><tr><th>5</th><td class="ok num">57</td><td class="ok num">38</td><td class="ok num">49</td><td class="ok num">32</td><td class="self">—</td></tr></table>
+<h3>コントラスト</h3>
+<div class="tw"><table><thead><tr><th>組み合わせ</th><th>実測</th><th>下限</th><th>余裕</th>
+<th>判定</th></tr></thead><tbody><tr class="ok"><td>本文 / ページ地</td><td class="num">14.04:1</td><td class="num">4.5</td><td class="num"><span class="mg">+9.54<small>（3.12倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / カード</td><td class="num">10.94:1</td><td class="num">4.5</td><td class="num"><span class="mg">+6.44<small>（2.43倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / 沈めた面</td><td class="num">12.85:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.35<small>（2.86倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / ページ地</td><td class="num">7.36:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.86<small>（1.63倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / カード</td><td class="num">5.73:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.23<small>（1.27倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / 沈めた面</td><td class="num">6.73:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.23<small>（1.50倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / ページ地</td><td class="num">5.01:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.01<small>（1.67倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / カード</td><td class="num">3.90:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.90<small>（1.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント / カード</td><td class="num">4.83:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.83<small>（1.61倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>正常 / カード</td><td class="num">4.83:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.83<small>（1.61倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>注意 / カード</td><td class="num">6.96:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.96<small>（2.32倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>失敗 / カード</td><td class="num">4.05:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.05<small>（1.35倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / ページ地</td><td class="num">16.63:1</td><td class="num">3.0</td><td class="num"><span class="mg">+13.63<small>（5.54倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / 沈めた面</td><td class="num">15.22:1</td><td class="num">3.0</td><td class="num"><span class="mg">+12.22<small>（5.07倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>選択文字 / 選択地</td><td class="num">6.83:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.33<small>（1.52倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント</td><td class="num">6.02:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.52<small>（1.34倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント（ホバー）</td><td class="num">8.62:1</td><td class="num">4.5</td><td class="num"><span class="mg">+4.12<small>（1.92倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント（ホバー） / カード</td><td class="num">6.93:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.93<small>（2.31倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 正常</td><td class="num">6.02:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.52<small>（1.34倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 注意</td><td class="num">8.47:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.97<small>（1.88倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 失敗</td><td class="num">5.32:1</td><td class="num">4.5</td><td class="num"><span class="mg tight">+0.82<small>（1.18倍）</small></span></td><td>合格</td></tr><tr class="info"><td>フォーカス / アクセント（塗りに接した場合）</td><td class="num">2.68:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="info"><td>フォーカス / アクセント・ホバー（同上）</td><td class="num">1.87:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="ok"><td>chart-1 / bg</td><td class="num">15.87:1</td><td class="num">3.0</td><td class="num"><span class="mg">+12.87<small>（5.29倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / bg</td><td class="num">5.75:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.75<small>（1.92倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / bg</td><td class="num">8.06:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.06<small>（2.69倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / bg</td><td class="num">11.98:1</td><td class="num">3.0</td><td class="num"><span class="mg">+8.98<small>（3.99倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / bg</td><td class="num">4.05:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.05<small>（1.35倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-1 / surface-well</td><td class="num">14.53:1</td><td class="num">3.0</td><td class="num"><span class="mg">+11.53<small>（4.84倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / surface-well</td><td class="num">5.26:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.26<small>（1.75倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / surface-well</td><td class="num">7.37:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.37<small>（2.46倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / surface-well</td><td class="num">10.96:1</td><td class="num">3.0</td><td class="num"><span class="mg">+7.96<small>（3.65倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / surface-well</td><td class="num">3.70:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.70<small>（1.23倍）</small></span></td><td>合格</td></tr></tbody></table></div>
+<p class="cap">「参考」の2行は判定しません。<code>--focus-ring</code> は地とアクセントに挟まれ、
+両方から 3:1 離れる色がどのシーンにも存在しないためです。
+<code>outline-offset</code> を正の値にしてリングを地の上に浮かせる運用が前提で、
+その前提が崩れたときに効いてくる数字として出しています。<br>
+「余裕」は下限との差と、下限の何倍か。1.20倍を下回るものに印を付けています
+（下限すれすれの項目を見つけるため。印が付いていても不合格ではありません）。</p>
+<h3>トークン</h3>
+<div class="tw"><table><thead><tr><th>トークン</th><th>値</th><th>用途</th></tr></thead>
+<tbody><tr><td><code>--bg</code></td><td><span class="sw" style="background:#0c0c0b"></span><code>#0c0c0b</code></td><td></td></tr><tr><td><code>--surface</code></td><td><span class="sw" style="background:#23271b"></span><code>#23271b</code></td><td></td></tr><tr><td><code>--surface-well</code></td><td><span class="sw" style="background:#191712"></span><code>#191712</code></td><td></td></tr><tr><td><code>--text</code></td><td><span class="sw" style="background:#e2dac5"></span><code>#e2dac5</code></td><td></td></tr><tr><td><code>--text-muted</code></td><td><span class="sw" style="background:#a89e85"></span><code>#a89e85</code></td><td></td></tr><tr><td><code>--text-disabled</code></td><td><span class="sw" style="background:#6a6454"></span><code>#6a6454</code></td><td></td></tr><tr><td><code>--selection-bg</code></td><td><span class="sw" style="background:#4a5437"></span><code>#4a5437</code></td><td></td></tr><tr><td><code>--selection-text</code></td><td><span class="sw" style="background:#f2ece0"></span><code>#f2ece0</code></td><td></td></tr><tr><td><code>--border</code></td><td><span class="sw" style="background:#333828"></span><code>#333828</code></td><td></td></tr><tr><td><code>--border-strong</code></td><td><span class="sw" style="background:#7d8468"></span><code>#7d8468</code></td><td></td></tr><tr><td><code>--accent</code></td><td><span class="sw" style="background:#7e9a5a"></span><code>#7e9a5a</code></td><td></td></tr><tr><td><code>--accent-hover</code></td><td><span class="sw" style="background:#9cb878"></span><code>#9cb878</code></td><td></td></tr><tr><td><code>--on-accent</code></td><td><span class="sw" style="background:#0d1207"></span><code>#0d1207</code></td><td></td></tr><tr><td><code>--success</code></td><td><span class="sw" style="background:#7e9a5a"></span><code>#7e9a5a</code></td><td></td></tr><tr><td><code>--on-success</code></td><td><span class="sw" style="background:#0d1207"></span><code>#0d1207</code></td><td></td></tr><tr><td><code>--warning</code></td><td><span class="sw" style="background:#e0a52e"></span><code>#e0a52e</code></td><td></td></tr><tr><td><code>--on-warning</code></td><td><span class="sw" style="background:#1a1203"></span><code>#1a1203</code></td><td></td></tr><tr><td><code>--danger</code></td><td><span class="sw" style="background:#d4604c"></span><code>#d4604c</code></td><td></td></tr><tr><td><code>--on-danger</code></td><td><span class="sw" style="background:#140402"></span><code>#140402</code></td><td></td></tr><tr><td><code>--focus-ring</code></td><td><span class="sw" style="background:#f2ece0"></span><code>#f2ece0</code></td><td></td></tr><tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#9dff7d"></span><code>#9dff7d</code></td><td></td></tr><tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#a8872c"></span><code>#a8872c</code></td><td></td></tr><tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#44b1e3"></span><code>#44b1e3</code></td><td></td></tr><tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#f0c0ae"></span><code>#f0c0ae</code></td><td></td></tr><tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#7d705c"></span><code>#7d705c</code></td><td></td></tr><tr><td><code>--font-ui</code></td><td><code>&quot;Helvetica Neue&quot;, Helvetica, Arial,
+                  &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--font-mono</code></td><td><code>ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas,
+                  &quot;Noto Sans Mono CJK JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-display</code></td><td><code>&quot;Stencil Std&quot;, &quot;Oswald&quot;, &quot;Helvetica Neue Condensed Bold&quot;,
+                  &quot;Arial Narrow&quot;, &quot;Hiragino Sans&quot;, &quot;Noto Sans JP&quot;, sans-serif</code></td><td></td></tr><tr><td><code>--radius</code></td><td><code>2px</code></td><td></td></tr><tr><td><code>--border-width</code></td><td><code>2px</code></td><td></td></tr><tr><td><code>--glow-color</code></td><td><span class="sw" style="background:#000000"></span><code>#000000</code></td><td></td></tr><tr><td><code>--shadow</code></td><td><code>3px 3px 0 var(--glow-color)</code></td><td></td></tr><tr><td><code>--shadow-inset</code></td><td><code>inset 0 0 0 0 transparent</code></td><td></td></tr></tbody></table></div>
+<h2>typewriter</h2>
+<div class="scene-head"><span class="badge pass">合格</span>
+  <span class="cap">極性 light ／ 自前のトークン 33個</span></div>
+
+<h3>画面見本（実際の値で描画）</h3>
+
+<div class="mock" style="background:#f3eee1;color:#2b241c;
+     font-family:&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, serif;border-color:#857a66">
+  <div class="mock-card" style="background:#faf6ec;border:1px solid #857a66;
+       border-radius:0;box-shadow:inset 0 0 0 0 transparent">
+    <div class="mock-h" style="font-family:&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, serif">送出先</div>
+    <div class="mock-in" style="background:#eae2d0;border:1px solid #857a66;
+         border-radius:0;color:#6a5f50;font-family:&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, monospace">
+      rtmp://ingest.example.com/live/■■■■
+    </div>
+    <div class="mock-row">
+      <span class="mock-btn" style="background:#963f33;color:#f8f4e9;
+            border-radius:0">送出開始</span>
+      <span class="mock-btn" style="background:#786530;color:#f8f4e9;
+            border-radius:0">警告1件あり</span>
+      <span class="mock-btn" style="background:#963f33;color:#f8f4e9;
+            border-radius:0">停止</span>
+      <span class="mock-btn" style="background:#4a5a42;color:#f8f4e9;
+            border-radius:0">running</span>
+    </div>
+    <div class="mock-p" style="color:#2b241c">本文。送出中の絵を毎秒1枚だけ取りに行きます。</div>
+    <div class="mock-p" style="color:#6a5f50">補助文字。受信側の絵ではありません。</div>
+    <div class="mock-p" style="color:#a1947f">操作できない状態の文字。</div>
+    <div class="mock-p"><span style="background:#e0d3b8;color:#2b241c">選択したところ</span>
+      <span class="mock-focus" style="outline:2px solid #4a3f30;border-radius:0;
+            color:#2b241c">フォーカス</span></div>
+    <div class="mock-rule" style="border-top:1px solid #ddd2bd"></div>
+    <div class="mock-charts"><span style="background:#292222"></span><span style="background:#3d3838"></span><span style="background:#5c4d46"></span><span style="background:#7a6458"></span><span style="background:#8f8061"></span></div>
+  </div>
+</div>
+<p class="cap">この資料の地色ではなく、シーンの <code>--bg</code> 上に描いています。</p>
+<h3>系列色と色覚シミュレーション</h3>
+<div class="bands"><div class="band"><span class="band-l">通常</span><div class="band-c"><span style="background:#292222"></span><span style="background:#3d3838"></span><span style="background:#5c4d46"></span><span style="background:#7a6458"></span><span style="background:#8f8061"></span></div><span class="band-n info">最小ΔE 10.1<small>（chart-1×chart-2・参考・判定対象外）</small></span></div><div class="band"><span class="band-l">P型</span><div class="band-c"><span style="background:#232322"></span><span style="background:#393838"></span><span style="background:#4f4e46"></span><span style="background:#676658"></span><span style="background:#828161"></span></div><span class="band-n info">最小ΔE 10.0<small>（chart-1×chart-2・参考・判定対象外）</small></span></div><div class="band"><span class="band-l">D型</span><div class="band-c"><span style="background:#242422"></span><span style="background:#3a3a38"></span><span style="background:#525246"></span><span style="background:#6b6b58"></span><span style="background:#858561"></span></div><span class="band-n info">最小ΔE 10.2<small>（chart-1×chart-2・参考・判定対象外）</small></span></div><div class="band"><span class="band-l">白黒</span><div class="band-c"><span style="background:#242424"></span><span style="background:#393939"></span><span style="background:#505050"></span><span style="background:#686868"></span><span style="background:#828282"></span></div><span class="band-n ok">最小ΔL* 10.0<small>（chart-4×chart-5・下限 10）</small></span></div></div><p class="cap">白黒は色相が落ちて明度だけが残る状態。ΔL* は CIE Lab の明度差で、これが小さいと紙の上では同じ線になる。下の表は全ペアのΔE76（通常・P型・D型のうち最小値）、<b>このシーンでは判定しません（参考値）</b>。彩度を持たない設計では色相成分がほぼゼロになり、ΔE76 の定義から ΔE ≥ |ΔL*| が常に成り立つため、ΔL* 10 を課している時点で ΔE は ΔL* の別名でしかありません。識別は ΔL* 10 と線種の併用で担保します。</p><table class="grid"><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><th>1</th><td class="self">—</td><td class="info num">10</td><td class="info num">20</td><td class="info num">30</td><td class="info num">43</td></tr><tr><th>2</th><td class="info num">10</td><td class="self">—</td><td class="info num">11</td><td class="info num">21</td><td class="info num">35</td></tr><tr><th>3</th><td class="info num">20</td><td class="info num">11</td><td class="self">—</td><td class="info num">10</td><td class="info num">24</td></tr><tr><th>4</th><td class="info num">30</td><td class="info num">21</td><td class="info num">10</td><td class="self">—</td><td class="info num">14</td></tr><tr><th>5</th><td class="info num">43</td><td class="info num">35</td><td class="info num">24</td><td class="info num">14</td><td class="self">—</td></tr></table>
+<h3>コントラスト</h3>
+<div class="tw"><table><thead><tr><th>組み合わせ</th><th>実測</th><th>下限</th><th>余裕</th>
+<th>判定</th></tr></thead><tbody><tr class="ok"><td>本文 / ページ地</td><td class="num">13.21:1</td><td class="num">4.5</td><td class="num"><span class="mg">+8.71<small>（2.94倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / カード</td><td class="num">14.18:1</td><td class="num">4.5</td><td class="num"><span class="mg">+9.68<small>（3.15倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>本文 / 沈めた面</td><td class="num">11.87:1</td><td class="num">4.5</td><td class="num"><span class="mg">+7.37<small>（2.64倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / ページ地</td><td class="num">5.39:1</td><td class="num">4.5</td><td class="num"><span class="mg tight">+0.89<small>（1.20倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / カード</td><td class="num">5.78:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.28<small>（1.28倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>補助文字 / 沈めた面</td><td class="num">4.84:1</td><td class="num">4.5</td><td class="num"><span class="mg tight">+0.34<small>（1.08倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / ページ地</td><td class="num">3.65:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.65<small>（1.22倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>意味のある境界 / カード</td><td class="num">3.91:1</td><td class="num">3.0</td><td class="num"><span class="mg">+0.91<small>（1.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント / カード</td><td class="num">6.37:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.37<small>（2.12倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>正常 / カード</td><td class="num">6.87:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.87<small>（2.29倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>注意 / カード</td><td class="num">5.26:1</td><td class="num">3.0</td><td class="num"><span class="mg">+2.26<small>（1.75倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>失敗 / カード</td><td class="num">6.37:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.37<small>（2.12倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / ページ地</td><td class="num">8.87:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.87<small>（2.96倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>フォーカス / 沈めた面</td><td class="num">7.97:1</td><td class="num">3.0</td><td class="num"><span class="mg">+4.97<small>（2.66倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>選択文字 / 選択地</td><td class="num">10.34:1</td><td class="num">4.5</td><td class="num"><span class="mg">+5.84<small>（2.30倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント</td><td class="num">6.25:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.75<small>（1.39倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / アクセント（ホバー）</td><td class="num">8.18:1</td><td class="num">4.5</td><td class="num"><span class="mg">+3.68<small>（1.82倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>アクセント（ホバー） / カード</td><td class="num">8.33:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.33<small>（2.78倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 正常</td><td class="num">6.75:1</td><td class="num">4.5</td><td class="num"><span class="mg">+2.25<small>（1.50倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 注意</td><td class="num">5.16:1</td><td class="num">4.5</td><td class="num"><span class="mg tight">+0.66<small>（1.15倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>塗りの上の文字 / 失敗</td><td class="num">6.25:1</td><td class="num">4.5</td><td class="num"><span class="mg">+1.75<small>（1.39倍）</small></span></td><td>合格</td></tr><tr class="info"><td>フォーカス / アクセント（塗りに接した場合）</td><td class="num">1.49:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="info"><td>フォーカス / アクセント・ホバー（同上）</td><td class="num">1.14:1</td><td class="num">参考</td><td class="num">—</td><td>判定対象外</td></tr><tr class="ok"><td>chart-1 / bg</td><td class="num">13.47:1</td><td class="num">3.0</td><td class="num"><span class="mg">+10.47<small>（4.49倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / bg</td><td class="num">9.95:1</td><td class="num">3.0</td><td class="num"><span class="mg">+6.95<small>（3.32倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / bg</td><td class="num">6.96:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.96<small>（2.32倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / bg</td><td class="num">4.78:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.78<small>（1.59倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / bg</td><td class="num">3.34:1</td><td class="num">3.0</td><td class="num"><span class="mg tight">+0.34<small>（1.11倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-1 / surface-well</td><td class="num">12.10:1</td><td class="num">3.0</td><td class="num"><span class="mg">+9.10<small>（4.03倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-2 / surface-well</td><td class="num">8.94:1</td><td class="num">3.0</td><td class="num"><span class="mg">+5.94<small>（2.98倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-3 / surface-well</td><td class="num">6.25:1</td><td class="num">3.0</td><td class="num"><span class="mg">+3.25<small>（2.08倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-4 / surface-well</td><td class="num">4.30:1</td><td class="num">3.0</td><td class="num"><span class="mg">+1.30<small>（1.43倍）</small></span></td><td>合格</td></tr><tr class="ok"><td>chart-5 / surface-well</td><td class="num">3.00:1</td><td class="num">3.0</td><td class="num"><span class="mg tight">+0.00<small>（1.00倍）</small></span></td><td>合格</td></tr></tbody></table></div>
+<p class="cap">「参考」の2行は判定しません。<code>--focus-ring</code> は地とアクセントに挟まれ、
+両方から 3:1 離れる色がどのシーンにも存在しないためです。
+<code>outline-offset</code> を正の値にしてリングを地の上に浮かせる運用が前提で、
+その前提が崩れたときに効いてくる数字として出しています。<br>
+「余裕」は下限との差と、下限の何倍か。1.20倍を下回るものに印を付けています
+（下限すれすれの項目を見つけるため。印が付いていても不合格ではありません）。</p>
+<h3>トークン</h3>
+<div class="tw"><table><thead><tr><th>トークン</th><th>値</th><th>用途</th></tr></thead>
+<tbody><tr><td><code>--bg</code></td><td><span class="sw" style="background:#f3eee1"></span><code>#f3eee1</code></td><td></td></tr><tr><td><code>--surface</code></td><td><span class="sw" style="background:#faf6ec"></span><code>#faf6ec</code></td><td></td></tr><tr><td><code>--surface-well</code></td><td><span class="sw" style="background:#eae2d0"></span><code>#eae2d0</code></td><td></td></tr><tr><td><code>--text</code></td><td><span class="sw" style="background:#2b241c"></span><code>#2b241c</code></td><td></td></tr><tr><td><code>--text-muted</code></td><td><span class="sw" style="background:#6a5f50"></span><code>#6a5f50</code></td><td></td></tr><tr><td><code>--text-disabled</code></td><td><span class="sw" style="background:#a1947f"></span><code>#a1947f</code></td><td></td></tr><tr><td><code>--selection-bg</code></td><td><span class="sw" style="background:#e0d3b8"></span><code>#e0d3b8</code></td><td></td></tr><tr><td><code>--selection-text</code></td><td><span class="sw" style="background:#2b241c"></span><code>#2b241c</code></td><td></td></tr><tr><td><code>--border</code></td><td><span class="sw" style="background:#ddd2bd"></span><code>#ddd2bd</code></td><td></td></tr><tr><td><code>--border-strong</code></td><td><span class="sw" style="background:#857a66"></span><code>#857a66</code></td><td></td></tr><tr><td><code>--accent</code></td><td><span class="sw" style="background:#963f33"></span><code>#963f33</code></td><td></td></tr><tr><td><code>--accent-hover</code></td><td><span class="sw" style="background:#7e3024"></span><code>#7e3024</code></td><td></td></tr><tr><td><code>--on-accent</code></td><td><span class="sw" style="background:#f8f4e9"></span><code>#f8f4e9</code></td><td></td></tr><tr><td><code>--success</code></td><td><span class="sw" style="background:#4a5a42"></span><code>#4a5a42</code></td><td></td></tr><tr><td><code>--on-success</code></td><td><span class="sw" style="background:#f8f4e9"></span><code>#f8f4e9</code></td><td></td></tr><tr><td><code>--warning</code></td><td><span class="sw" style="background:#786530"></span><code>#786530</code></td><td></td></tr><tr><td><code>--on-warning</code></td><td><span class="sw" style="background:#f8f4e9"></span><code>#f8f4e9</code></td><td></td></tr><tr><td><code>--danger</code></td><td><span class="sw" style="background:#963f33"></span><code>#963f33</code></td><td></td></tr><tr><td><code>--on-danger</code></td><td><span class="sw" style="background:#f8f4e9"></span><code>#f8f4e9</code></td><td></td></tr><tr><td><code>--focus-ring</code></td><td><span class="sw" style="background:#4a3f30"></span><code>#4a3f30</code></td><td></td></tr><tr><td><code>--chart-1</code></td><td><span class="sw" style="background:#292222"></span><code>#292222</code></td><td></td></tr><tr><td><code>--chart-2</code></td><td><span class="sw" style="background:#3d3838"></span><code>#3d3838</code></td><td></td></tr><tr><td><code>--chart-3</code></td><td><span class="sw" style="background:#5c4d46"></span><code>#5c4d46</code></td><td></td></tr><tr><td><code>--chart-4</code></td><td><span class="sw" style="background:#7a6458"></span><code>#7a6458</code></td><td></td></tr><tr><td><code>--chart-5</code></td><td><span class="sw" style="background:#8f8061"></span><code>#8f8061</code></td><td></td></tr><tr><td><code>--font-ui</code></td><td><code>&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, serif</code></td><td></td></tr><tr><td><code>--font-mono</code></td><td><code>&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, monospace</code></td><td></td></tr><tr><td><code>--font-display</code></td><td><code>&quot;Courier New&quot;, Courier, &quot;Nimbus Mono PS&quot;,
+                  &quot;Hiragino Mincho ProN&quot;, &quot;Yu Mincho&quot;, &quot;Noto Serif JP&quot;, serif</code></td><td></td></tr><tr><td><code>--radius</code></td><td><code>0</code></td><td></td></tr><tr><td><code>--border-width</code></td><td><code>1px</code></td><td></td></tr><tr><td><code>--glow-color</code></td><td><span class="sw" style="background:#2b241c"></span><code>#2b241c</code></td><td></td></tr><tr><td><code>--shadow</code></td><td><code>inset 0 0 0 0 transparent</code></td><td></td></tr><tr><td><code>--shadow-inset</code></td><td><code>inset 0 0 0 0 transparent</code></td><td></td></tr></tbody></table></div>
+
+<footer>
+<p><b>この資料が見ている範囲</b>：theme.css に書かれた<b>トークンの値</b>だけです。
+次のものは対象外で、ここが合格でも壊れていることがあります。</p>
+<ul>
+<li><b>CSS の文法</b> — 値が構文として妥当かは見ていません。実際
+<code>--shadow-inset: none</code> は <code>box-shadow</code> のリスト要素になれない文法バグでしたが、
+値としては読めてしまうため、このページでは原理的に検出できませんでした。</li>
+<li><b>トークンの参照関係</b> — 未定義のトークンを <code>var()</code> で参照していても分かりません。</li>
+<li><b>コンポーネント側の使われ方</b> — style.css がどのトークンをどこに使ったかは見ていません。
+<code>--border</code> を押せる要素の輪郭に使う類の誤りは、この資料では見つかりません。</li>
+<li><b>実際の描画</b> — ブラウザ差、フォントの実在、重なり、アニメーションは対象外です。</li>
+<li><b>世界観との整合</b> — 数値が良くても、そのシーンらしさが壊れていることがあります。
+ターミナルに鮮やかなマゼンタが入っても、このページは合格と出します。
+色相の制約は <code>tools/palette-search.py</code> に書いてありますが、
+守られたかどうかをこのページは検証していません。</li>
+</ul>
+<p>生成 2026-09-21 11:56 ／ <code>tools/theme-review.py</code>
+／ 判定は <code>tools/check-contrast.py</code> と同一のロジック
+／ 対象 <code>app/static/theme.css</code>
+sha256 <code>f2f7cecd2f2b8a60</code> ／ git 8b9ef31</p>
+</footer>
+</div></body></html>

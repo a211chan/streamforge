@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ja" data-scene="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StreamForge</title>
+<!-- ファビコンは PNG。原画がラスターなので SVG では持たない。
+     theme-color はブラウザのUI側なので、シーンには追従させずブランドの navy で固定する -->
+<link rel="icon" href="/static/brand/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/static/brand/favicon-16.png" sizes="16x16">
+<link rel="icon" href="/static/brand/favicon-48.png" sizes="48x48">
+<link rel="apple-touch-icon" href="/static/brand/apple-touch-icon.png">
+<meta name="theme-color" content="#0F172A">
+<link rel="stylesheet" href="/static/theme.css">
+<link rel="stylesheet" href="/static/style.css">
+<script>
+// 配色は描き始める前に決める。body を描いてから差し替えると一瞬ちらつく。
+// 優先順位は localStorage → prefers-color-scheme → light。
+// シーンは1つの属性だけで決まる（モードとテーマの2軸には分けない）
+(function () {
+  var SCENES = ['light', 'dark', 'terminal', 'tactical', 'typewriter'];
+  var root = document.documentElement;
+  var scene = null;
+  try { scene = localStorage.getItem('sf.scene'); }
+  catch (e) { /* プライベートウィンドウなど。OSの設定で描く */ }
+  if (SCENES.indexOf(scene) < 0) {
+    // 選んだことがなければ OS の設定に従う。
+    // 世界観のあるシーン（terminal など）は、自分で選んだときだけ出す
+    scene = window.matchMedia
+      && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  root.setAttribute('data-scene', scene);
+})();
+</script>
+</head>
+<body>
+<header>
+  <!-- マークは .brand の ::before で出す。シーンごとに出し方が変わるので、
+       出すか出さないかを markup 側に持たせない（style.css を見れば全シーン分かる） -->
+  <span class="brand"><h1>StreamForge</h1></span>
+  <div id="header-note" class="muted"></div>
+
+  <div class="appearance">
+    <div class="seg">
+      <span>見た目</span>
+      <div class="seg-group" id="scene-switch">
+        <button type="button" data-scene="light" aria-pressed="false"
+                title="標準・明るい地">ライト</button>
+        <button type="button" data-scene="dark" aria-pressed="false"
+                title="標準・暗い地">ダーク</button>
+        <button type="button" data-scene="terminal" aria-pressed="false"
+                title="端末。緑の燐光と等幅">ターミナル</button>
+        <button type="button" data-scene="tactical" aria-pressed="false"
+                title="軍用装備。艶のない面と硬い影">タクティカル</button>
+        <button type="button" data-scene="typewriter" aria-pressed="false"
+                title="原稿用紙。赤インク一色と明朝">タイプライター</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============================================================ 組み立て -->
+  <section class="card" id="composer">
+
+    <!-- 送出中はここだけが残り、①②③は畳まれる -->
+    <div id="composer-folded" class="folded hidden">
+      <span class="folded-chips">
+        <span class="chip static">① 送出先</span>
+        <span class="chip static">② ソース</span>
+        <span class="chip static">③ 画質</span>
+      </span>
+      <span class="muted">畳んでいます（停止すると値を保ったまま戻ります）</span>
+      <button id="composer-reopen" class="ghost">開く</button>
+    </div>
+
+    <div id="composer-body">
+      <!-- ---------------------------------------------------- ① 送出先 -->
+      <div class="step" id="step-target">
+        <div class="step-head"><span class="step-no">①</span><h2>送出先</h2>
+          <span class="muted">貼るだけ・プロトコルは自動判定</span></div>
+
+        <input id="url" type="text" class="url-input"
+               placeholder="rtmp://example.com/live/streamkey  または  srt://example.com:9000?streamid=..."
+               autocomplete="off" spellcheck="false">
+
+        <div id="verdict" class="verdict hidden"></div>
+        <div id="params" class="params hidden"></div>
+        <div id="warnings" class="warnings hidden"></div>
+        <div id="suggestion" class="verdict hidden"></div>
+
+        <div class="target-row">
+          <label class="field inline">
+            <span>プロトコル</span>
+            <select id="protocol-override">
+              <option value="">自動判定にまかせる</option>
+              <option value="rtmp">RTMP</option>
+              <option value="srt">SRT</option>
+              <option value="whip">WebRTC (WHIP)</option>
+            </select>
+          </label>
+          <label class="field inline grow"><span>ラベル（任意・保存名になります）</span>
+            <input id="label" type="text" placeholder="ceeblue-tokyo" autocomplete="off"></label>
+          <label class="field inline grow hidden" id="token-field"><span>Bearerトークン（WHIP・任意）</span>
+            <input id="bearer" type="password" autocomplete="off" placeholder="保存時は暗号化されます"></label>
+          <button id="test" class="ghost">疎通確認</button>
+        </div>
+        <div id="test-result" class="verdict hidden"></div>
+      </div>
+
+      <div class="step-row">
+        <!-- -------------------------------------------------- ② ソース -->
+        <div class="step" id="step-source">
+          <div class="step-head"><span class="step-no">②</span><h2>ソース</h2></div>
+
+          <div class="tpl-chips">
+            <select id="src-type" style="width:auto">
+              <option value="testsrc">テストパターン</option>
+              <option value="file">ファイル（ループ）</option>
+              <option value="live_url">外部ライブソース</option>
+            </select>
+            <select id="src-file" class="hidden" style="width:auto"></select>
+            <select id="src-catalog" class="hidden" style="width:auto"></select>
+            <input id="src-url" type="text" class="hidden" placeholder="https://example.com/live.m3u8"
+                   style="width:auto;flex:1;min-width:240px">
+          </div>
+
+          <div id="src-opts" class="src-opts">
+            <label class="field inline hidden" id="opt-pattern"><span>テストパターン</span>
+              <select id="pattern"><option>testsrc2</option><option>smptebars</option></select>
+            </label>
+            <label class="field inline checkbox hidden" id="opt-tone">
+              <input id="tone" type="checkbox"><span>音声（1kHzトーン）を含める</span></label>
+            <label class="field inline hidden" id="opt-prebuffer"><span>素材の先読み (秒 / 0=なし)</span>
+              <input id="prebuffer" type="number" min="0" max="60"
+                     title="ライブHLSをライブ端より手前から読み、素材が一瞬詰まってもエンコードが途切れないようにします">
+            </label>
+          </div>
+          <div id="src-note" class="muted"></div>
+        </div>
+
+        <!-- -------------------------------------------------- ③ 画質 -->
+        <div class="step" id="step-quality">
+          <div class="step-head"><span class="step-no">③</span><h2>画質</h2>
+            <span class="muted">既定のまま送出できます</span></div>
+
+          <div id="tpl-chips" class="tpl-chips"></div>
+          <div id="tpl-note" class="muted"></div>
+
+          <details class="settings" id="settings">
+            <summary>エンコード設定</summary>
+            <div class="grid">
+              <label class="field"><span>幅</span><input id="width" type="number" min="16" step="2"></label>
+              <label class="field"><span>高さ</span><input id="height" type="number" min="16" step="2"></label>
+              <label class="field"><span>fps</span><input id="fps" type="number" min="1" max="120"></label>
+              <label class="field"><span>ビットレート (kbps)</span><input id="bitrate" type="number" min="100" step="100"></label>
+              <label class="field"><span>GOP (秒)</span><input id="gop" type="number" min="0.1" step="0.5"></label>
+              <label class="field"><span>preset</span>
+                <select id="preset">
+                  <option>ultrafast</option><option>superfast</option><option>veryfast</option>
+                  <option>faster</option><option>fast</option><option>medium</option>
+                </select>
+              </label>
+              <label class="field"><span>エンコーダー</span>
+                <select id="encoder">
+                  <option value="libx264">libx264 (CPU)</option>
+                  <option value="h264_videotoolbox">h264_videotoolbox (Mac HW)</option>
+                </select>
+              </label>
+              <label class="field"><span>タイムアウト (秒 / 0=無期限)</span>
+                <input id="duration" type="number" min="0"><small id="duration-note" class="muted"></small></label>
+            </div>
+          </details>
+
+          <details class="settings" id="overlay-settings">
+            <summary>オーバーレイ<span id="ov-summary" class="muted"></span></summary>
+            <div class="grid">
+              <label class="field checkbox"><input id="ov-clock" type="checkbox"><span>時計を焼き込む</span></label>
+              <label class="field"><span>時計モード</span>
+                <select id="ov-clock-mode">
+                  <option value="both">両方（既定）</option>
+                  <option value="wallclock">壁時計のみ（絶対遅延の概算）</option>
+                  <option value="framecount">フレーム番号のみ（厳密な比較）</option>
+                </select>
+              </label>
+              <label class="field"><span>時計の位置</span><select id="ov-clock-pos" class="pos"></select></label>
+              <label class="field checkbox"><input id="ov-info" type="checkbox"><span>設定情報を焼き込む</span></label>
+              <label class="field"><span>情報の位置</span><select id="ov-info-pos" class="pos"></select></label>
+            </div>
+            <div id="clock-status" class="muted" style="margin-top:10px"></div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------------ 操作 -->
+      <div class="launch">
+        <div class="actions">
+          <button id="start" class="primary" disabled>送出開始</button>
+          <button id="preview" class="ghost">コマンドを確認</button>
+          <button id="bench" class="ghost"
+                  title="この設定で実時間の何倍処理できるかを数秒測ります。送出はしません">処理能力を測る</button>
+          <label class="field checkbox"><input id="auto-restart" type="checkbox"><span>自動再接続</span></label>
+          <label class="field checkbox"
+                 title="Ceeblue など、受け取った映像をWebRTCで配信するCDNに送る場合。Bフレーム無効・baseline に落とします">
+            <input id="webrtc-delivery" type="checkbox"><span>配信先がWebRTCで配信する</span></label>
+        </div>
+        <p id="start-note" class="muted"></p>
+      </div>
+
+      <div id="bench-result" class="verdict hidden"></div>
+      <div id="adaptations" class="warnings hidden"></div>
+      <pre id="command" class="command hidden"></pre>
+      <div id="error" class="error hidden"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 稼働中 -->
+  <section class="card hidden" id="monitor">
+    <div class="monitor-head">
+      <h2>稼働中 <span id="job-id" class="badge"></span> <span id="job-status" class="badge"></span></h2>
+      <span id="job-clock" class="muted"></span>
+    </div>
+
+    <div class="monitor-grid">
+      <div class="monitor-stage">
+        <div id="selfview" class="selfview hidden">
+          <h3>セルフプレビュー <span id="selfview-age" class="muted"></span></h3>
+          <div class="selfview-frame">
+            <img id="selfview-img" alt="送出中のフレーム">
+            <p id="selfview-empty" class="muted">最初の1枚を待っています…</p>
+          </div>
+          <p class="muted selfview-note">
+            エンコードの直前（オーバーレイを焼いた後）の絵を毎秒1枚。<b>受信側の絵ではありません。</b>
+            画面を裏に回している間は取りに行きません。
+          </p>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="k">経過</span><span class="v" id="s-time">–</span></div>
+          <div class="stat"><span class="k">fps</span><span class="v" id="s-fps">–</span></div>
+          <div class="stat"><span class="k">bitrate</span><span class="v" id="s-bitrate">–</span></div>
+          <div class="stat"><span class="k">speed</span><span class="v" id="s-speed">–</span></div>
+          <div class="stat"><span class="k">drop</span><span class="v" id="s-drop">–</span></div>
+          <div class="stat"><span class="k">frame</span><span class="v" id="s-frame">–</span></div>
+          <div class="stat"><span class="k">映像の遅れ</span><span class="v" id="s-skew">–</span></div>
+        </div>
+      </div>
+
+      <div class="monitor-side">
+        <!-- 送出中に「何で送っているか」を読み返せるようにする。編集はできない -->
+        <div class="conditions">
+          <h3>この送出の条件 <span class="muted">読み取り専用</span></h3>
+          <table id="conditions"><tbody></tbody></table>
+        </div>
+
+        <div class="timeline-box">
+          <h3>時系列 <span class="muted">指摘とログ</span>
+            <label class="field checkbox inline-right">
+              <input id="timeline-only-diag" type="checkbox"><span>指摘だけ</span></label>
+          </h3>
+          <pre id="timeline" class="log"></pre>
+          <div id="timeline-diag" class="timeline-diag hidden"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="diagnoses" class="warnings hidden"></div>
+
+    <div class="actions monitor-actions">
+      <button id="stop" class="danger hidden">停止</button>
+      <button id="download-report" class="ghost">結果をJSONで保存</button>
+      <button id="open-monitor" class="ghost">この画面だけのURLを開く</button>
+    </div>
+  </section>
+
+  <!-- ==================================================== ④ 記録と資産 -->
+  <section class="card vault" id="vault">
+    <button id="vault-toggle" class="vault-toggle" aria-expanded="false" aria-controls="vault-body">
+      <span class="vault-caret">▸</span>
+      <span class="vault-title">④ 記録と資産</span>
+      <span class="vault-chips" id="vault-chips"></span>
+    </button>
+
+    <div id="vault-body" class="vault-body" hidden>
+      <div class="tabs" role="tablist">
+        <button class="tab" data-tab="history"   role="tab" aria-selected="true">履歴</button>
+        <button class="tab" data-tab="targets"   role="tab" aria-selected="false">送出先</button>
+        <button class="tab" data-tab="templates" role="tab" aria-selected="false">テンプレート</button>
+        <button class="tab" data-tab="media"     role="tab" aria-selected="false">メディア</button>
+        <button class="tab" data-tab="system"    role="tab" aria-selected="false">システム</button>
+      </div>
+
+      <div class="panel" data-panel="history">
+        <table id="history">
+          <thead><tr><th>#</th><th>状態</th><th>プロトコル</th><th>送出先</th><th>開始</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel hidden" data-panel="targets">
+        <table id="targets">
+          <thead><tr><th>ラベル</th><th>プロトコル</th><th>URL</th><th>使用</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p id="targets-empty" class="muted hidden">送出すると自動で保存されます。</p>
+      </div>
+
+      <div class="panel hidden" data-panel="templates">
+        <table id="templates">
+          <thead><tr><th></th><th>名前</th><th>設定</th><th>使用</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel hidden" data-panel="media">
+        <div class="target-row">
+          <input id="upload" type="file" style="width:auto">
+          <button id="upload-btn" class="ghost">アップロード</button>
+          <span class="muted" id="media-dir"></span>
+        </div>
+        <table id="media"><tbody></tbody></table>
+        <p id="media-empty" class="muted hidden">
+          ファイルがありません。上のアップロードか、media ディレクトリに直接置いてください。</p>
+      </div>
+
+      <div class="panel hidden" data-panel="system">
+        <div id="system-detail" class="system-detail muted">確認中…</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="statusbar">
+  <span id="caps" class="caps">能力を確認中…</span>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
