@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>tv.streamforge.api</string>
+
+  <!-- run.sh は .venv の python を起動する。cd 済みで動くよう WorkingDirectory を指定 -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>@@REPO@@/run.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>@@REPO@@</string>
+
+  <!-- ログイン時に起動し、落ちたら起こし直す -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+
+  <!-- Homebrew の ffmpeg を見つけられるように PATH を明示する。
+       launchd の既定 PATH には /opt/homebrew/bin が入っていない -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>@@LOGDIR@@/streamforge.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>@@LOGDIR@@/streamforge.err.log</string>
+</dict>
+</plist>
