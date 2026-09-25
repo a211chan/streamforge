@@ -114,8 +114,7 @@ ffmpeg -listen 1 -i rtmp://127.0.0.1:11935/live/test -c copy -f null -   # RTMP
 ffmpeg -i 'srt://127.0.0.1:19000?mode=listener' -c copy -f null -        # SRT
 ```
 
-WHIP の受け口には [mediamtx](https://github.com/bluenviron/mediamtx) が使えます。設定例は
-[環境検証メモ](docs/環境検証メモ.md)に記載しています。
+WHIP の受け口には [mediamtx](https://github.com/bluenviron/mediamtx) が使えます。
 
 テスト：
 
@@ -221,11 +220,7 @@ theme.css のコメントと一対一。片方だけ変えるとテストが落�
 
 | | |
 |---|---|
-| [プロダクト憲章](docs/プロダクト憲章.md) | なぜ作るか、スコープ、判断の指針 |
 | [機能設計書](docs/機能設計書.md) | データモデル、機能仕様、API、実測値 |
-| [環境検証メモ](docs/環境検証メモ.md) | FFmpegの能力調査とWHIP検証手順 |
-| [公開前チェックリスト](docs/公開前チェックリスト.md) | Public化するときに確認する項目 |
-| [ブランド素材](assets/brand/README.md) | ロゴ・アイコンの原本と、派生物の作り方 |
 
 ## ライセンス
 
@@ -235,5 +230,4 @@ FFmpeg は GPL ビルドを使いますが、本ツールは FFmpeg を外部プ
 
 `requirements.txt` の依存はすべて許諾的なライセンス（FastAPI/pydantic/pydantic-core:
 MIT、Starlette/uvicorn/click/idna: BSD-3-Clause、cryptography/python-multipart:
-Apache-2.0）で、MIT配布と両立します（2026-09-23 確認）。ブランド素材（`assets/brand/`）の
-権利は未確認です。詳細は[公開前チェックリスト](docs/公開前チェックリスト.md)。
+Apache-2.0）で、MIT配布と両立します（2026-09-23 確認）。
