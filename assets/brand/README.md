@@ -1,12 +1,16 @@
 # ブランド素材の原本
 
 ここに置くのは**原本だけ**。実行時にこのディレクトリを読むコードは無い。
-配信用・掲載用は `tools/build-brand.sh` がここから生成する（→ `app/static/brand/`、`docs/images/brand/`）。
+配信用・掲載用（`app/static/brand/`、`docs/images/brand/`）はここから生成したもの。
+生成に使ったスクリプト（`tools/build-brand.sh`）はエンコードテストツール本体とは
+無関係なため、公開リポジトリからは外してある。原画を差し替えて作り直す場合は、
+このディレクトリの構成（原本→白地抜き→ロックアップ合成）を参考に個別に作業すること。
 
 | ファイル | 中身 | 何から作ったか |
 |---|---|---|
 | `icon-master-1254.webp` | エンブレム単体（1254×1254・白地） | 支給された原画。すべての派生物の出どころ |
-| `icon-master-transparent.png` | 同上の白地を抜いたもの | 上から生成。ロックアップの部品 |
+| `icon-master-transparent-adjusted.webp` | 白地を手で抜いたエンブレム（1000×1000・透過） | 支給。自動の白抜きを置き換えたもの |
+| `icon-master-transparent.png` | 上を余白で切り詰めたもの | 上から生成。ロックアップの部品 |
 | `brand-sheet.webp` | ブランドシート（2000×1529） | 支給。ワードマーク・タグライン・配色の版下 |
 | `wordmark.png` | 「StreamForge」（678×99・透過） | ブランドシートの原寸ロゴタイプから切り出し |
 | `tagline.png` | 「LIVE STREAMING TEST TOOL」（391×30・透過） | 同上 |
