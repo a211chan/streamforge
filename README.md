@@ -114,8 +114,7 @@ ffmpeg -listen 1 -i rtmp://127.0.0.1:11935/live/test -c copy -f null -   # RTMP
 ffmpeg -i 'srt://127.0.0.1:19000?mode=listener' -c copy -f null -        # SRT
 ```
 
-WHIP の受け口には [mediamtx](https://github.com/bluenviron/mediamtx) が使えます。設定例は
-[環境検証メモ](docs/環境検証メモ.md)に記載しています。
+WHIP の受け口には [mediamtx](https://github.com/bluenviron/mediamtx) が使えます。
 
 テスト：
 
@@ -218,9 +217,7 @@ theme.css のコメントと一対一。片方だけ変えるとテストが落�
 
 | | |
 |---|---|
-| [プロダクト憲章](docs/プロダクト憲章.md) | なぜ作るか、スコープ、判断の指針 |
 | [機能設計書](docs/機能設計書.md) | データモデル、機能仕様、API、実測値 |
-| [環境検証メモ](docs/環境検証メモ.md) | FFmpegの能力調査とWHIP検証手順 |
 
 ## ライセンス
 
