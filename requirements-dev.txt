@@ -1,0 +1,4 @@
+-r requirements.txt
+
+# 画面の E2E テスト（tests/test_e2e_ui.py）用。本番の起動には不要
+playwright==1.63.0

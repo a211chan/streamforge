@@ -123,6 +123,16 @@ WHIP の受け口には [mediamtx](https://github.com/bluenviron/mediamtx) が�
 .venv/bin/python -m unittest discover -s tests -t .
 ```
 
+画面の E2E テスト（`tests/test_e2e_ui.py`）は Playwright を使います。入っていなければスキップされます。
+
+```bash
+.venv/bin/pip install -r requirements-dev.txt
+```
+
+```bash
+.venv/bin/python -m playwright install chromium
+```
+
 ## 設定（`config.toml`）
 
 | 項目 | 既定 | 備考 |
