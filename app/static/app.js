@@ -1185,7 +1185,8 @@ function renderVaultChips() {
 // ④ から「使う」を押したときは、畳んで組み立てに戻す
 function backToComposer() {
   toggleVault(false);
-  backToComposer();
+  foldComposer(false);
+  el.composer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 el.url.addEventListener('input', () => {
