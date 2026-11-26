@@ -1229,6 +1229,7 @@ for (const tab of document.querySelectorAll('.tab')) {
   tab.addEventListener('click', () => selectVaultTab(tab.dataset.tab));
 }
 el.timelineOnlyDiag.addEventListener('change', applyTimelineFilter);
+$('help').addEventListener('click', () => window.SFOnboarding?.start());
 
 for (const id of ['width', 'height', 'fps', 'bitrate', 'gop', 'preset', 'encoder']) {
   $(id).addEventListener('input', markCustom);
@@ -1242,6 +1243,7 @@ async function initMonitorPage(jobId) {
   el.monitor.classList.remove('hidden');
   $('header-note').textContent = `監視 #${jobId} — 同じ端末の別タブ用。設定の操作はここにはありません。`;
   el.openMonitor.classList.add('hidden');
+  $('help').classList.add('hidden');   // 案内する組み立て画面が無い
   el.jobId.textContent = `#${jobId}`;
   el.downloadReport.onclick = () => { window.location.href = reportUrl(jobId); };
   applyTimelineFilter();
@@ -1286,4 +1288,6 @@ async function initMonitorPage(jobId) {
   await Promise.all([refreshSources(), refreshTemplates(), refreshTargets(), refreshHistory()]);
   updateStartButton();
   loadClockStatus();
+  // 画面が埋まってから出す。空の欄を指して説明すると、実物とずれて見える
+  window.SFOnboarding?.maybeStart({ monitorOnly: MONITOR_ONLY });
 })();
