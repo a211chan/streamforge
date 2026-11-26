@@ -40,7 +40,10 @@
   <span class="brand"><h1>StreamForge</h1></span>
   <div id="header-note" class="muted"></div>
 
-  <div class="appearance">
+  <div class="appearance" id="appearance">
+    <!-- マニュアルの代わり。初回は自動で出て、ここからいつでも見直せる（onboarding.js） -->
+    <button type="button" id="help" class="ghost help-btn"
+            title="画面の各部分を順に案内します">使い方</button>
     <div class="seg">
       <span>見た目</span>
       <div class="seg-group" id="scene-switch">
@@ -193,7 +196,7 @@
       </div>
 
       <!-- ------------------------------------------------------ 操作 -->
-      <div class="launch">
+      <div class="launch" id="launch">
         <div class="actions">
           <button id="start" class="primary" disabled>送出開始</button>
           <button id="preview" class="ghost">コマンドを確認</button>
@@ -334,6 +337,7 @@
   <span id="caps" class="caps">能力を確認中…</span>
 </footer>
 
+<script src="/static/onboarding.js"></script>
 <script src="/static/app.js"></script>
 </body>
 </html>

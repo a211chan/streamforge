@@ -548,6 +548,46 @@ html[data-scene="typewriter"] body { line-height: 1.9; letter-spacing: .02em; }
 [data-scene="typewriter"] .badge { background: transparent;
   border: var(--border-width) solid var(--border-strong); }
 
+/* --------------------------------------------------------- 初回ツアー
+ * onboarding.js が作る。マニュアルの代わりに、実物の場所を順に指す。
+ * 暗幕は「黒をかぶせる」のではなく --bg に寄せて沈める。
+ * dark でも terminal でも、地の色に溶けるので世界観を壊さない */
+
+.help-btn { padding: 5px 12px; font-size: 12px; }
+
+.tour-scrim { position: fixed; inset: 0; z-index: 1000; }
+.tour-scrim.solid { background: color-mix(in srgb, var(--bg) 82%, transparent); }
+
+.tour-spot {
+  position: fixed; z-index: 1001; pointer-events: none;
+  border-radius: calc(var(--radius) * 1.6);
+  outline: 2px solid var(--accent); outline-offset: 0;
+  box-shadow: 0 0 0 200vmax color-mix(in srgb, var(--bg) 82%, transparent);
+  transition: top .2s ease, left .2s ease, width .2s ease, height .2s ease;
+}
+
+.tour-pop {
+  position: fixed; z-index: 1002;
+  width: min(420px, calc(100vw - 24px));
+  background: var(--surface); color: var(--text);
+  border: var(--border-width) solid var(--border-strong);
+  border-radius: calc(var(--radius) * 1.6);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 14px;
+}
+.tour-pop.centered { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.tour-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.tour-head h2 { margin: 0; font-size: 15px; font-family: var(--font-display); }
+.tour-count { font-size: 12px; white-space: nowrap; }
+.tour-body { margin: 10px 0 14px; font-size: 13px; line-height: 1.75; }
+.tour-body code {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--surface-well); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0 4px;
+}
+.tour-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tour-nav { display: flex; gap: 8px; }
+
 /* --------------------------------------------------------- 動きを止める */
 
 @media (prefers-reduced-motion: reduce) {
